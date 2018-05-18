@@ -1,0 +1,11 @@
+{
+  "name": "floyd-newspaper-backend",
+  "version": "1.0.0",
+  "description": "The backend RESTful API for the Floyd Newspaper",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
