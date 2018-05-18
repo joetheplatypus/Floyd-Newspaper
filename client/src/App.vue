@@ -1,13 +1,22 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <router-view/>
+    <v-app>
+      <toolbar></toolbar>
+      <v-content>
+        <router-view/>
+      </v-content>
+    </v-app>
   </div>
 </template>
 
 <script>
+import Toolbar from '@/components/Toolbar'
+
 export default {
-  name: 'App'
+  name: 'App',
+  components: {
+    'toolbar': Toolbar
+  }
 }
 </script>
 
@@ -18,6 +27,5 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>
