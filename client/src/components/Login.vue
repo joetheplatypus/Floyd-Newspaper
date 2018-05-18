@@ -1,0 +1,53 @@
+<template>
+  <v-container>
+    <h1>Login</h1>
+    <v-flex xs6 offset-xs3 class="box" elevation-1>
+      <v-form>
+        <v-text-field label="email" v-model="user.email"></v-text-field>
+        <v-text-field label="password" v-model="user.password"></v-text-field>
+        <v-btn @click.prevent="login()" flat color="primary">Login</v-btn>
+      </v-form>
+      <div>{{error}}</div>
+    </v-flex>
+  </v-container>
+</template>
+
+<script>
+import UserService from '@/services/UserService'
+
+export default {
+  data () {
+    return {
+      user: {
+        email: '',
+        password: ''
+      },
+      error: ''
+    }
+  },
+  methods: {
+    async login () {
+      this.error = ''
+      const response = (await UserService.login(this.user)).data
+      if (response.auth) {
+        this.$store.dispatch('setToken', response.token)
+        this.$store.dispatch('setUser', response.user)
+        this.$store.dispatch('setLoggedIn', true)
+        this.$router.push({
+          name: 'Home'
+        })
+      } else {
+        this.error = 'invalid login'
+      }
+    }
+  }
+}
+</script>
+
+<style scoped>
+.box {
+  background-color:white;
+  padding: 20px 50px;
+  margin-top: 30px
+}
+</style>
