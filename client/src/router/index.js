@@ -16,6 +16,11 @@ export default new Router({
       component: HomePage
     },
     {
+      path: '/:category',
+      name: 'FilteredHome',
+      component: HomePage
+    },
+    {
       path: '/login',
       name: 'Login',
       component: Login

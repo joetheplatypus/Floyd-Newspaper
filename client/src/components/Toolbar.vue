@@ -4,9 +4,10 @@
     <v-toolbar-title>Floyd News</v-toolbar-title>
     <v-spacer></v-spacer>
     <v-toolbar-items>
-      <v-btn flat>School News</v-btn>
-      <v-btn flat>Politics</v-btn>
-      <v-btn flat>World</v-btn>
+      <v-btn flat :to="{name: 'Home'}">All</v-btn>
+      <v-btn flat :to="{name: 'FilteredHome', params: {category: 'school-news'}}">School News</v-btn>
+      <v-btn flat :to="{name: 'FilteredHome', params: {category: 'politics'}}">Politics</v-btn>
+      <v-btn flat :to="{name: 'FilteredHome', params: {category: 'world'}}">World</v-btn>
     </v-toolbar-items>
   </v-toolbar>
 </template>

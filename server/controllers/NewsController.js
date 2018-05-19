@@ -15,8 +15,22 @@ module.exports = {
   },
   async index (req,res) {
     try {
-      items = await News.find({})
-      res.send(items)
+      if(req.query.cat) {
+        let category = ''
+        if(req.query.cat === 'school-news') {
+          category = 'School News'
+        } else if(req.query.cat === 'world') {
+          category = 'World'
+        } else if(req.query.cat === 'politics') {
+          category = 'Politics'
+        }
+        items = await News.find({category:category})
+        res.send(items)
+      } else {
+        items = await News.find({})
+        res.send(items)
+      }
+      
     } catch (err) {
       res.send(err)
     }

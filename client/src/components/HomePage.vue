@@ -27,7 +27,7 @@
                 />
                 <v-card-title><h2 class="px-3">{{posts[0].title}}</h2><i> in <a href="#">{{posts[0].category}}</a></i><v-spacer /><span class="px-3">by {{posts[0].poster.name}}</span></v-card-title>
                 <v-card-text v-if="posts[0].content">
-                  <div v-html="posts[0].content.substr(0,500) + ' ...'"></div>
+                  <div v-html="posts[0].content.substr(0,500) + ' ...'" class="text-xs-left"></div>
                 </v-card-text>
                 <v-card-actions>
                   <v-spacer></v-spacer>
@@ -70,17 +70,24 @@ export default {
   name: 'HomePage',
   data () {
     return {
-      posts: [{
-        poster: {}
-      }]
+      posts: []
     }
   },
-  async mounted () {
-    const posts = (await NewsService.index()).data
-    for (var i = 0; i < posts.length; i++) {
-      posts[i].poster = (await UserService.get(posts[i].posterId)).data
+  watch: {
+    '$route.params.category': { immediate: true,
+      async handler (category) {
+        this.fetchPosts(category)
+      }
     }
-    this.posts = posts
+  },
+  methods: {
+    async fetchPosts (cat) {
+      const posts = (await NewsService.index(cat)).data
+      for (var i = 0; i < posts.length; i++) {
+        posts[i].poster = (await UserService.get(posts[i].posterId)).data
+      }
+      this.posts = posts
+    }
   }
 }
 </script>
