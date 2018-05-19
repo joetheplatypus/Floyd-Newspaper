@@ -7,7 +7,9 @@ export default new Vuex.Store({
   strict: true,
   state: {
     token: null,
-    user: null,
+    user: {
+      _id: null
+    },
     loggedIn: false
   },
   mutations: {
@@ -35,6 +37,7 @@ export default new Vuex.Store({
   },
   getters: {
     token: state => state.token,
-    loggedIn: state => state.loggedIn
+    loggedIn: state => state.loggedIn,
+    userId: state => state.user._id || null
   }
 })

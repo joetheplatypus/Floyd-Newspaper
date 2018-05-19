@@ -4,6 +4,7 @@ import HomePage from '@/components/HomePage'
 import Login from '@/components/Login'
 import Logout from '@/components/Logout'
 import CreatePost from '@/components/CreatePost'
+import ViewPost from '@/components/ViewPost'
 
 Vue.use(Router)
 
@@ -28,6 +29,11 @@ export default new Router({
       path: '/new',
       name: 'CreatePost',
       component: CreatePost
+    },
+    {
+      path: '/posts/:postId',
+      name: 'ViewPost',
+      component: ViewPost
     }
   ]
 })

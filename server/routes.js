@@ -15,4 +15,6 @@ module.exports = function(app) {
   //users
   app.post('/login', UserController.login)
   app.post('/register', UserController.register)
+  app.get('/userInfo', CheckToken, UserController.info)
+  app.get('/user/:id', UserController.get)
 }

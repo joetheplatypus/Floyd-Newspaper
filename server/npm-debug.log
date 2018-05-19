@@ -1,0 +1,36 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'D:\\Programs\\nodejs\\node.exe',
+1 verbose cli   'C:\\Users\\Joe\\AppData\\Roaming\\npm\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli   'run',
+1 verbose cli   'dev' ]
+2 info using npm@3.10.9
+3 info using node@v8.11.1
+4 verbose run-script [ 'predev', 'dev', 'postdev' ]
+5 info lifecycle floyd-newspaper-backend@1.0.0~predev: floyd-newspaper-backend@1.0.0
+6 silly lifecycle floyd-newspaper-backend@1.0.0~predev: no script for predev, continuing
+7 info lifecycle floyd-newspaper-backend@1.0.0~dev: floyd-newspaper-backend@1.0.0
+8 verbose lifecycle floyd-newspaper-backend@1.0.0~dev: unsafe-perm in lifecycle true
+9 verbose lifecycle floyd-newspaper-backend@1.0.0~dev: PATH: C:\Users\Joe\AppData\Roaming\npm\node_modules\npm\bin\node-gyp-bin;D:\Documents\js\Floyd-Newspaper\server\node_modules\.bin;C:\Program Files\Haskell\bin;C:\Program Files\Haskell Platform\8.2.2\lib\extralibs\bin;C:\Program Files\Haskell Platform\8.2.2\bin;C:\ProgramData\Oracle\Java\javapath;C:\Program Files (x86)\Intel\iCLS Client\;C:\Program Files\Intel\iCLS Client\;C:\windows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0\;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files (x86)\GtkSharp\2.12\bin;C:\WINDOWS\system32\config\systemprofile\.dnx\bin;C:\Program Files\Microsoft DNX\Dnvm\;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Skype\Phone\;C:\Program Files (x86)\Common Files\Propellerhead Software\ReWire\;C:\Program Files\Common Files\Propellerhead Software\ReWire\;C:\Program Files\Haskell Platform\8.2.2\mingw\bin;C:\Program Files\Git\cmd;D:\Programs\nodejs\;C:\Users\Joe\AppData\Roaming\cabal\bin;C:\Users\Joe\AppData\Roaming\local\bin;C:\Users\Joe\AppData\Local\Programs\Python\Python35-32\Scripts\;C:\Users\Joe\AppData\Local\Programs\Python\Python35-32\;C:\Users\Joe\AppData\Local\Microsoft\WindowsApps;C:\Users\Joe\AppData\Local\atom\bin;C:\Users\Joe\AppData\Local\Microsoft\WindowsApps;C:\Program Files\Microsoft VS Code\bin;C:\Users\Joe\AppData\Roaming\npm
+10 verbose lifecycle floyd-newspaper-backend@1.0.0~dev: CWD: D:\Documents\js\Floyd-Newspaper\server
+11 silly lifecycle floyd-newspaper-backend@1.0.0~dev: Args: [ '/d /s /c', 'nodemon server.js' ]
+12 verbose stack Error: kill ENOSYS
+12 verbose stack     at Object._errnoException (util.js:1022:11)
+12 verbose stack     at process.kill (internal/process.js:183:18)
+12 verbose stack     at process.listener (C:\Users\Joe\AppData\Roaming\npm\node_modules\npm\node_modules\npmlog\node_modules\gauge\node_modules\signal-exit\index.js:86:15)
+12 verbose stack     at emitNone (events.js:111:20)
+12 verbose stack     at process.emit (events.js:208:7)
+12 verbose stack     at processEmit (C:\Users\Joe\AppData\Roaming\npm\node_modules\npm\node_modules\npmlog\node_modules\gauge\node_modules\signal-exit\index.js:146:32)
+12 verbose stack     at processEmit (C:\Users\Joe\AppData\Roaming\npm\node_modules\npm\node_modules\npm-registry-client\node_modules\npmlog\node_modules\gauge\node_modules\signal-exit\index.js:146:32)
+12 verbose stack     at Signal.wrap.onsignal (internal/process.js:208:44)
+13 verbose cwd D:\Documents\js\Floyd-Newspaper\server
+14 error Windows_NT 10.0.16299
+15 error argv "D:\\Programs\\nodejs\\node.exe" "C:\\Users\\Joe\\AppData\\Roaming\\npm\\node_modules\\npm\\bin\\npm-cli.js" "run" "dev"
+16 error node v8.11.1
+17 error npm  v3.10.9
+18 error code ENOSYS
+19 error errno ENOSYS
+20 error syscall kill
+21 error kill ENOSYS
+22 error If you need help, you may report this error at:
+22 error     <https://github.com/npm/npm/issues>
+23 verbose exit [ 1, true ]

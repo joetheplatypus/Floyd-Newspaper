@@ -5,7 +5,11 @@ const postSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  body:{
+  content:{
+    type: String,
+    required: true
+  },
+  category:{
     type: String,
     required: true
   },

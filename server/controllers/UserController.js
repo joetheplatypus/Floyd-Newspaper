@@ -42,5 +42,23 @@ module.exports = {
     } catch (err) {
       res.send(err)
     }
-  }
+  },
+  async info (req,res) {
+    try {
+      const user = await User.findOne({_id:req.userId})
+      user.password = undefined
+      res.send(user)
+    } catch (err) {
+      res.send(err)
+    }
+  },
+  async get (req,res) {
+    try {
+      const user = await User.findOne({_id: req.params.id})
+      user.password = undefined
+      res.send(user)
+    } catch (err) {
+      res.send(err)
+    }
+  },
 }

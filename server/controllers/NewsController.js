@@ -4,8 +4,9 @@ module.exports = {
   async post (req,res) {
     try {
       if(req.body.posterId !== req.userId) {
-        throw 'cannot post as someone else'
+        throw `cannot post as someone else a${req.body.posterId} b${req.userId}`
       }
+      req.body.date = new Date()
       const item = await News.create(req.body)
       res.send(item)
     } catch (err) {

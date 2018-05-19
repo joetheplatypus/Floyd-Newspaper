@@ -17,71 +17,35 @@
       <v-container>
         <h1>The Floyd News</h1>
         <v-container>
-          <v-layout row>
+          <v-layout row class="mb-3">
             <v-flex xs8>
               <h3 class="mb-3">Featured Post</h3>
-              <v-card>
+              <v-card v-if="posts[0]">
                 <v-card-media
                   src="https://www.sirhenryfloyd.bucks.sch.uk/assets/Gallery/_resampled/CroppedImage1200513-school-photos-2.jpg"
                   height="200px"
                 />
-                <v-card-title><h2 class="px-3">News Article Title</h2><i> in <a href="#">School News</a></i><v-spacer /><span class="px-3">by Joe Blogs</span></v-card-title>
-                <v-card-text>
-                  Buildings
-                  Our current building project has not got as
-                  far as we would have hoped by this time. We
-                  are estimating that all three parts of the
-                  project will be complete by Easter. Internal
-                  adaptations are always more complex to
-                  manage than the construction of a complete
-                  new building. We have been coping with
-                  moving lessons from one room to another in
-                  the Central Block, having a section of the
-                  canteen boarded up, losing a corridor in the
-                  Performing Arts building… students have
-                  been remarkably co-operative through all the
-                  disruption. It will all be worth it in the end!
-                  ...
+                <v-card-title><h2 class="px-3">{{posts[0].title}}</h2><i> in <a href="#">{{posts[0].category}}</a></i><v-spacer /><span class="px-3">by {{posts[0].poster.name}}</span></v-card-title>
+                <v-card-text v-if="posts[0].content">
+                  <div v-html="posts[0].content.substr(0,500) + ' ...'"></div>
                 </v-card-text>
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn color="primary" flat>Read More</v-btn>
+                  <v-btn color="primary" flat :to="`posts/${posts[0]._id}`">Read More</v-btn>
                 </v-card-actions>
               </v-card>
             </v-flex>
             <v-flex xs4 class="pl-3">
               <h3 class="mb-3">Latest Posts</h3>
-              <v-card class="my-2">
+              <v-card class="my-2" v-for="post in posts" :key="post._id">
                 <v-card-media
                   src="https://www.sirhenryfloyd.bucks.sch.uk/assets/Gallery/_resampled/CroppedImage1200513-school-photos-2.jpg"
                   height="200px"
                 />
-                <v-card-title><h2 class="px-3">News Article Title</h2><i> in <a href="#">School News</a></i><v-spacer /><span class="px-3">by Joe Blogs</span></v-card-title>
+                <v-card-title><h2 class="px-3">{{post.title}}</h2><i> in <a href="#">{{post.category}}</a></i><v-spacer /><span class="px-3">by {{post.poster.name}}</span></v-card-title>
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn color="primary" flat>Read More</v-btn>
-                </v-card-actions>
-              </v-card>
-              <v-card class="my-2">
-                <!-- <v-card-media
-                  src="https://www.sirhenryfloyd.bucks.sch.uk/assets/Gallery/_resampled/CroppedImage1200513-school-photos-2.jpg"
-                  height="200px"
-                /> -->
-                <v-card-title><h2 class="px-3">News Article Title</h2><i> in <a href="#">School News</a></i><v-spacer /><span class="px-3">by Joe Blogs</span></v-card-title>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn color="primary" flat>Read More</v-btn>
-                </v-card-actions>
-              </v-card>
-              <v-card class="my-2">
-                <v-card-media
-                  src="https://www.sirhenryfloyd.bucks.sch.uk/assets/Gallery/_resampled/CroppedImage1200513-school-photos-2.jpg"
-                  height="200px"
-                />
-                <v-card-title><h2 class="px-3">News Article Title</h2><i> in <a href="#">School News</a></i><v-spacer /><span class="px-3">by Joe Blogs</span></v-card-title>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn color="primary" flat>Read More</v-btn>
+                  <v-btn color="primary" flat :to="`posts/${post._id}`">Read More</v-btn>
                 </v-card-actions>
               </v-card>
             </v-flex>
@@ -99,11 +63,24 @@
 </template>
 
 <script>
+import NewsService from '@/services/NewsService'
+import UserService from '@/services/UserService'
+
 export default {
   name: 'HomePage',
   data () {
     return {
+      posts: [{
+        poster: {}
+      }]
     }
+  },
+  async mounted () {
+    const posts = (await NewsService.index()).data
+    for (var i = 0; i < posts.length; i++) {
+      posts[i].poster = (await UserService.get(posts[i].posterId)).data
+    }
+    this.posts = posts
   }
 }
 </script>

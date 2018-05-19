@@ -3,40 +3,46 @@
     <h1>Create a news item</h1>
     <v-flex xs8 offset-xs2 class="box" elevation-1>
       <v-form>
-        <v-text-field label="Title" v-model="title"></v-text-field>
-        <vue-editor v-model="content"></vue-editor>
-        <v-btn @click.prevent="login()" flat color="primary">Login</v-btn>
+        <v-text-field label="Title" v-model="post.title"></v-text-field>
+        <v-radio-group v-model="post.category" row>
+          <v-radio label="School News" value="School News" ></v-radio>
+          <v-radio label="Politics" value="Politics"></v-radio>
+          <v-radio label="World" value="World"></v-radio>
+        </v-radio-group>
+        <vue-editor v-model="post.content"></vue-editor>
+        <v-btn @click.prevent="submit()" flat color="primary">Create</v-btn>
       </v-form>
-      <div>{{error}}{{content}}</div>
+      <div>{{error}}{{post.content}}</div>
     </v-flex>
   </v-container>
 </template>
 
 <script>
-import UserService from '@/services/UserService'
+import NewsService from '@/services/NewsService'
 import { VueEditor } from 'vue2-editor'
 
 export default {
   data () {
     return {
-      title: '',
-      content: '',
+      post: {
+        title: '',
+        content: '',
+        category: '',
+        posterId: this.$store.getters.userId
+      },
       error: ''
     }
   },
   methods: {
-    async login () {
+    async submit () {
       this.error = ''
-      const response = (await UserService.login(this.user)).data
-      if (response.auth) {
-        this.$store.dispatch('setToken', response.token)
-        this.$store.dispatch('setUser', response.user)
-        this.$store.dispatch('setLoggedIn', true)
+      const response = (await NewsService.post(this.post)).data
+      if (response.error) {
+        this.error = response.error
+      } else {
         this.$router.push({
           name: 'Home'
         })
-      } else {
-        this.error = 'invalid login'
       }
     }
   },
