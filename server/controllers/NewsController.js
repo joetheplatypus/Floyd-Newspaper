@@ -24,10 +24,10 @@ module.exports = {
         } else if(req.query.cat === 'politics') {
           category = 'Politics'
         }
-        items = await News.find({category:category})
+        items = await News.find({category:category}).sort('-date')
         res.send(items)
       } else {
-        items = await News.find({})
+        items = await News.find({}).sort('-date')
         res.send(items)
       }
       

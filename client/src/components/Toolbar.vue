@@ -5,9 +5,9 @@
     <v-spacer></v-spacer>
     <v-toolbar-items>
       <v-btn flat :to="{name: 'Home'}">All</v-btn>
-      <v-btn flat :to="{name: 'FilteredHome', params: {category: 'school-news'}}">School News</v-btn>
-      <v-btn flat :to="{name: 'FilteredHome', params: {category: 'politics'}}">Politics</v-btn>
-      <v-btn flat :to="{name: 'FilteredHome', params: {category: 'world'}}">World</v-btn>
+      <v-btn flat :to="{name: 'Home', params: {category: 'school-news'}}">School News</v-btn>
+      <v-btn flat :to="{name: 'Home', params: {category: 'politics'}}">Politics</v-btn>
+      <v-btn flat :to="{name: 'Home', params: {category: 'world'}}">World</v-btn>
     </v-toolbar-items>
   </v-toolbar>
 </template>

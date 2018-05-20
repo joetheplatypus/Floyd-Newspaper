@@ -15,7 +15,8 @@
   </v-card>
     <v-flex xs8 offset-xs2 class="offwhite fullheight" height="100%">
       <v-container>
-        <h1>The Floyd News</h1>
+        <h1 class="display-2">The Floyd News</h1>
+        <h2 class="ma-3 headline">{{convertedCat($route.params.category)}}</h2>
         <v-container>
           <v-layout row class="mb-3">
             <v-flex xs8>
@@ -25,7 +26,7 @@
                   src="https://www.sirhenryfloyd.bucks.sch.uk/assets/Gallery/_resampled/CroppedImage1200513-school-photos-2.jpg"
                   height="200px"
                 />
-                <v-card-title><h2 class="px-3">{{posts[0].title}}</h2><i> in <a href="#">{{posts[0].category}}</a></i><v-spacer /><span class="px-3">by {{posts[0].poster.name}}</span></v-card-title>
+                <v-card-title><h2 class="px-3">{{posts[0].title}}</h2><i> in <router-link :to="{name:'Home', params: {category: convertCat(posts[0].category)}}">{{posts[0].category}}</router-link></i><v-spacer /><span class="px-3">by {{posts[0].poster.name}} - {{posts[0].date.toJSON().substr(0,10).split('-').reverse().join('/')}}</span></v-card-title>
                 <v-card-text v-if="posts[0].content">
                   <div v-html="posts[0].content.substr(0,500) + ' ...'" class="text-xs-left"></div>
                 </v-card-text>
@@ -42,7 +43,7 @@
                   src="https://www.sirhenryfloyd.bucks.sch.uk/assets/Gallery/_resampled/CroppedImage1200513-school-photos-2.jpg"
                   height="200px"
                 />
-                <v-card-title><h2 class="px-3">{{post.title}}</h2><i> in <a href="#">{{post.category}}</a></i><v-spacer /><span class="px-3">by {{post.poster.name}}</span></v-card-title>
+                <v-card-title><h2 class="px-3">{{post.title}}</h2><i> in <router-link :to="{name:'Home', params: {category: convertCat(post.category)}}">{{post.category}}</router-link></i><v-spacer /><span class="px-3">by {{post.poster.name}} - {{post.date.toJSON().substr(0,10).split('-').reverse().join('/')}}</span></v-card-title>
                 <v-card-actions>
                   <v-spacer></v-spacer>
                   <v-btn color="primary" flat :to="`posts/${post._id}`">Read More</v-btn>
@@ -85,8 +86,31 @@ export default {
       const posts = (await NewsService.index(cat)).data
       for (var i = 0; i < posts.length; i++) {
         posts[i].poster = (await UserService.get(posts[i].posterId)).data
+        posts[i].date = new Date(posts[i].date)
       }
       this.posts = posts
+    },
+    convertCat (cat) {
+      if (cat === 'School News') {
+        return 'school-news'
+      } else if (cat === 'Politics') {
+        return 'politics'
+      } else if (cat === 'World') {
+        return 'world'
+      } else {
+        return false
+      }
+    },
+    convertedCat (cat) {
+      if (cat === 'school-news') {
+        return 'School News'
+      } else if (cat === 'politics') {
+        return 'Politics'
+      } else if (cat === 'world') {
+        return 'World'
+      } else {
+        return ''
+      }
     }
   }
 }

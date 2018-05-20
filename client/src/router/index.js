@@ -11,16 +11,6 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/',
-      name: 'Home',
-      component: HomePage
-    },
-    {
-      path: '/:category',
-      name: 'FilteredHome',
-      component: HomePage
-    },
-    {
       path: '/login',
       name: 'Login',
       component: Login
@@ -39,6 +29,11 @@ export default new Router({
       path: '/posts/:postId',
       name: 'ViewPost',
       component: ViewPost
+    },
+    {
+      path: '/:category?',
+      name: 'Home',
+      component: HomePage
     }
   ]
 })

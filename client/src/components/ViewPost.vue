@@ -6,7 +6,7 @@
           src="https://www.sirhenryfloyd.bucks.sch.uk/assets/Gallery/_resampled/CroppedImage1200513-school-photos-2.jpg"
           height="200px"
         />
-        <v-card-title><h2 class="px-3">{{post.title}}</h2><i> in <a href="#">{{post.category}}</a></i><v-spacer /><span class="px-3">by {{post.poster.name}}</span></v-card-title>
+        <v-card-title><h2 class="px-3">{{post.title}}</h2><i> in <router-link :to="{name:'Home', params: {category: convertCat(post.category)}}">{{post.category}}</router-link></i><v-spacer /><span class="px-3">by {{post.poster.name}} - {{post.date.toJSON().substr(0,10).split('-').reverse().join('/')}}</span></v-card-title>
         <v-card-text>
           <div v-html="post.content" class="text-xs-left"></div>
         </v-card-text>
@@ -27,7 +27,8 @@ export default {
   data () {
     return {
       post: {
-        poster: {}
+        poster: {},
+        date: new Date()
       },
       error: ''
     }
@@ -40,6 +41,17 @@ export default {
     //   post.myPost = true;
     // }
     this.post = post
+  },
+  methods: {
+    convertCat (cat) {
+      if (cat === 'School News') {
+        return 'school-news'
+      } else if (cat === 'Politics') {
+        return 'politics'
+      } else if (cat === 'World') {
+        return 'world'
+      }
+    }
   }
 }
 </script>
