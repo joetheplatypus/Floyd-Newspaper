@@ -9,6 +9,7 @@
           <v-radio label="Politics" value="Politics"></v-radio>
           <v-radio label="World" value="World"></v-radio>
         </v-radio-group>
+        <v-text-field label="Image URL" v-model="post.imgurl"></v-text-field>
         <vue-editor v-model="post.content"></vue-editor>
         <v-btn @click.prevent="submit()" flat color="primary">Create</v-btn>
       </v-form>
@@ -28,6 +29,7 @@ export default {
         title: '',
         content: '',
         category: '',
+        imgurl: '',
         posterId: this.$store.getters.userId
       },
       error: ''

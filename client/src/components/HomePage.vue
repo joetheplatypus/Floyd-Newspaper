@@ -23,7 +23,7 @@
               <h3 class="mb-3">Featured Post</h3>
               <v-card v-if="posts[0]">
                 <v-card-media
-                  src="https://www.sirhenryfloyd.bucks.sch.uk/assets/Gallery/_resampled/CroppedImage1200513-school-photos-2.jpg"
+                  :src="posts[0].imgurl"
                   height="200px"
                 />
                 <v-card-title><h2 class="px-3">{{posts[0].title}}</h2><i> in <router-link :to="{name:'Home', params: {category: convertCat(posts[0].category)}}">{{posts[0].category}}</router-link></i><v-spacer /><span class="px-3">by {{posts[0].poster.name}} - {{posts[0].date.toJSON().substr(0,10).split('-').reverse().join('/')}}</span></v-card-title>
@@ -40,7 +40,7 @@
               <h3 class="mb-3">Latest Posts</h3>
               <v-card class="my-2" v-for="post in posts" :key="post._id">
                 <v-card-media
-                  src="https://www.sirhenryfloyd.bucks.sch.uk/assets/Gallery/_resampled/CroppedImage1200513-school-photos-2.jpg"
+                  :src="post.imgurl"
                   height="200px"
                 />
                 <v-card-title><h2 class="px-3">{{post.title}}</h2><i> in <router-link :to="{name:'Home', params: {category: convertCat(post.category)}}">{{post.category}}</router-link></i><v-spacer /><span class="px-3">by {{post.poster.name}} - {{post.date.toJSON().substr(0,10).split('-').reverse().join('/')}}</span></v-card-title>

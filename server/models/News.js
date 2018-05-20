@@ -13,6 +13,10 @@ const postSchema = mongoose.Schema({
     type: String,
     required: true
   },
+  imgurl:{
+    type: String,
+    required: true
+  },
   date: {
     type: Date,
     required: true
