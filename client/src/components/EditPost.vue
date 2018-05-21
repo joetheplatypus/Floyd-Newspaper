@@ -1,8 +1,9 @@
 <template>
   <v-container>
-    <h1>Create a news item</h1>
+    <h1>Edit a news item</h1>
     <v-flex xs8 offset-xs2 class="box" elevation-1>
-      <v-form>
+      <h3 class="err title" v-if="error">{{error}}</h3>
+      <v-form v-if="!error">
         <v-text-field label="Title" v-model="post.title"></v-text-field>
         <v-radio-group v-model="post.category" row>
           <v-radio label="School News" value="School News" ></v-radio>
@@ -14,7 +15,6 @@
         <v-btn @click.prevent="save()" flat color="primary">Save as draft</v-btn>
         <v-btn @click.prevent="submit()" flat color="primary">Submit</v-btn>
       </v-form>
-      <div>{{error}}{{post.content}}</div>
     </v-flex>
   </v-container>
 </template>
@@ -34,14 +34,24 @@ export default {
         status: '',
         posterId: this.$store.getters.userId
       },
-      error: ''
+      error: null
     }
   },
+  async mounted () {
+    this.load()
+  },
   methods: {
+    async load () {
+      const post = (await NewsService.getPreview(this.$route.params.postId)).data
+      if (post.error) {
+        this.error = post.error
+      }
+      this.post = post
+    },
     async submit () {
       this.post.status = 'pending'
       this.error = ''
-      const response = (await NewsService.post(this.post)).data
+      const response = (await NewsService.putPreview(this.post)).data
       if (response.error) {
         this.error = response.error
       } else {
@@ -58,6 +68,9 @@ export default {
 </script>
 
 <style scoped>
+.err {
+  color: red;
+}
 .box {
   background-color:white;
   padding: 20px 50px;

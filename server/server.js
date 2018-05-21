@@ -30,6 +30,12 @@ async function rmv () {
   await News.remove()
 }
 // rmv()
+//clear db
+const User = require('./models/User')
+async function rmvu () {
+  await User.remove()
+}
+// rmvu()
 
 
 app.listen(config.port, () => {

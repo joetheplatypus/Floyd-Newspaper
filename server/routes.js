@@ -11,10 +11,13 @@ module.exports = function(app) {
   app.post('/posts', CheckToken, NewsController.post)
   app.put('/posts/:itemId', CheckToken, NewsController.put)
   app.delete('/posts/:itemId', CheckToken, NewsController.delete)
+  app.get('/posts/:itemId/preview', CheckToken, NewsController.getPreview)
+  app.put('/posts/:itemId/preview', CheckToken, NewsController.putPreview)
 
   //users
   app.post('/login', UserController.login)
   app.post('/register', UserController.register)
   app.get('/userInfo', CheckToken, UserController.info)
   app.get('/user/:id', UserController.get)
+  app.get('/dashboard', CheckToken, UserController.dash)
 }

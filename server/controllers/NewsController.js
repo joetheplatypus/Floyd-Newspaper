@@ -1,4 +1,5 @@
 const News = require('../models/News')
+const User = require('../models/User')
 
 module.exports = {
   async post (req,res) {
@@ -65,5 +66,34 @@ module.exports = {
     } catch (err) {
       res.send(err)
     }
-  }
+  },
+  async getPreview (req, res) {
+    try {
+      const user = await User.findOne({_id:req.userId})
+      const newsItem = await News.findOne({_id:req.params.itemId})
+      if(user.admin || user.id === newsItem.posterId) {
+        res.send(newsItem)
+      } else {
+        const error = 'not authorised to preview this post'
+        res.send({error:error})
+      }
+    } catch (err) {
+      res.send(err)
+    }
+  },
+  async putPreview (req, res) {
+    try {
+      const user = await User.findOne({_id:req.userId})
+      const newsItem = await News.findOne({_id:req.params.itemId})
+      if(user.admin || user.id === newsItem.posterId) {
+        item = await News.findOneAndUpdate({_id: req.params.itemId},req.body,{new:true})
+      res.send(item)
+      } else {
+        const error = 'not authorised to preview this post'
+        res.send({error:error})
+      }
+    } catch (err) {
+      res.send(err)
+    }
+  },
 }

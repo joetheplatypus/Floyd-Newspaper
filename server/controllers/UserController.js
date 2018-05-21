@@ -2,6 +2,7 @@ const config = require('../config')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const User = require('../models/User')
+const News = require('../models/News')
 
 module.exports = {
   async register (req,res) {
@@ -57,6 +58,24 @@ module.exports = {
       const user = await User.findOne({_id: req.params.id})
       user.password = undefined
       res.send(user)
+    } catch (err) {
+      res.send(err)
+    }
+  },
+  async dash (req,res) {
+    try {
+      const user = await User.findOne({_id: req.userId})
+      user.password = undefined
+      let response = {}
+      if(user.admin) {
+        response.admin = true
+        response.posts = await News.find({status:'pending'}).sort('-date')
+        res.send(response)
+      } else {
+        response.admin = false
+        response.posts = await News.find({status:'pending', posterId:user.id}).sort('-date')
+        res.send(response)
+      }
     } catch (err) {
       res.send(err)
     }

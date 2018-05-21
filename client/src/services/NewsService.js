@@ -13,5 +13,11 @@ export default {
   },
   get (id) {
     return Api().get(`posts/${id}`)
+  },
+  getPreview (id) {
+    return Api().get(`posts/${id}/preview`)
+  },
+  putPreview (item) {
+    return Api().put(`posts/${item._id}/preview`, item)
   }
 }

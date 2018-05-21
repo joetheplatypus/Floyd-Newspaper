@@ -12,5 +12,8 @@ export default {
   },
   info () {
     return Api().get('userInfo')
+  },
+  dash () {
+    return Api().get('dashboard')
   }
 }
