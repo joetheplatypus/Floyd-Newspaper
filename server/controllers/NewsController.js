@@ -25,10 +25,10 @@ module.exports = {
         } else if(req.query.cat === 'politics') {
           category = 'Politics'
         }
-        items = await News.find({category:category}).sort('-date')
+        items = await News.find({category:category, status:'approved'}).sort('-date')
         res.send(items)
       } else {
-        items = await News.find({}).sort('-date')
+        items = await News.find({status:'approved'}).sort('-date')
         res.send(items)
       }
       
@@ -38,7 +38,7 @@ module.exports = {
   },
   async get (req,res) {
     try {
-      item = await News.findOne({_id: req.params.itemId})
+      item = await News.findOne({_id: req.params.itemId, status:'approved'})
       res.send(item)
     } catch (err) {
       res.send(err)

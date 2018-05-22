@@ -46,7 +46,19 @@ export default {
         this.error = response.error
       } else {
         this.$router.push({
-          name: 'Home'
+          name: 'Dashboard'
+        })
+      }
+    },
+    async save () {
+      this.post.status = 'draft'
+      this.error = ''
+      const response = (await NewsService.post(this.post)).data
+      if (response.error) {
+        this.error = response.error
+      } else {
+        this.$router.push({
+          name: 'Dashboard'
         })
       }
     }

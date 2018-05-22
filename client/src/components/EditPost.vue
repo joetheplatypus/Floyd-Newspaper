@@ -12,8 +12,7 @@
         </v-radio-group>
         <v-text-field label="Image URL" v-model="post.imgurl"></v-text-field>
         <vue-editor v-model="post.content"></vue-editor>
-        <v-btn @click.prevent="save()" flat color="primary">Save as draft</v-btn>
-        <v-btn @click.prevent="submit()" flat color="primary">Submit</v-btn>
+        <v-btn @click.prevent="submit()" flat color="primary">Save</v-btn>
       </v-form>
     </v-flex>
   </v-container>
@@ -49,14 +48,13 @@ export default {
       this.post = post
     },
     async submit () {
-      this.post.status = 'pending'
       this.error = ''
       const response = (await NewsService.putPreview(this.post)).data
       if (response.error) {
         this.error = response.error
       } else {
         this.$router.push({
-          name: 'Home'
+          name: 'Dashboard'
         })
       }
     }

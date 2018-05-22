@@ -36,6 +36,10 @@ export default {
   },
   async mounted () {
     const post = (await NewsService.get(this.$route.params.postId)).data
+    if (!post) {
+      this.error = 'Cannot find post'
+      return
+    }
     post.date = new Date(post.date)
     post.poster = (await UserService.get(post.posterId)).data
     // if (post.poster._id === this.$store.state.user._id) {

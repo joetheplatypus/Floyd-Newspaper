@@ -8,9 +8,9 @@
         bottom
         right
         color="primary"
-        to="new"
+        to="dashboard"
       >
-        <v-icon>add</v-icon>
+        <v-icon>dashboard</v-icon>
       </v-btn>
   </v-card>
     <v-flex xs8 offset-xs2 class="offwhite fullheight" height="100%">

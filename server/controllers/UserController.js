@@ -74,6 +74,7 @@ module.exports = {
       } else {
         response.admin = false
         response.posts = await News.find({status:'pending', posterId:user.id}).sort('-date')
+        response.draftPosts = await News.find({status:'draft', posterId:user.id}).sort('-date')
         res.send(response)
       }
     } catch (err) {
