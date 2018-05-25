@@ -100,7 +100,7 @@ export default {
     }
   },
   async mounted () {
-    this.editor = await ClassicEditor.create(document.querySelector('#editor'))
+    this.editor = await ClassicEditor.create(document.querySelector('#editor')) //eslint-disable-line
   },
   components: {
     VueEditor

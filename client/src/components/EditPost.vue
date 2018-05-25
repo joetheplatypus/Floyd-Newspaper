@@ -61,6 +61,7 @@ export default {
       if (response.error) {
         this.smallError = response.error
       } else {
+        this.$emit('snack', 'Post edited successfully')
         this.$router.push({
           name: 'Dashboard'
         })

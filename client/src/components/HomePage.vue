@@ -20,19 +20,19 @@
         <v-container>
           <v-layout row class="mb-3">
             <v-flex xs8>
-              <h3 class="mb-3">Featured Post</h3>
-              <v-card v-if="posts[0]">
+              <h3 class="mb-3">Featured Posts</h3>
+              <v-card class="my-2" v-for="post in featuredPosts" :key="post._id">
                 <v-card-media
-                  :src="posts[0].imgurl"
+                  :src="post.imgurl"
                   height="200px"
                 />
-                <v-card-title><h2 class="px-3">{{posts[0].title}}</h2><i> in <router-link :to="{name:'Home', params: {category: convertCat(posts[0].category)}}">{{posts[0].category}}</router-link></i><v-spacer /><span class="px-3">by {{posts[0].poster.name}} - {{posts[0].date.toJSON().substr(0,10).split('-').reverse().join('/')}}</span></v-card-title>
-                <v-card-text v-if="posts[0].content">
-                  <div v-html="posts[0].content.substr(0,500) + ' ...'" class="text-xs-left"></div>
+                <v-card-title><h2 class="px-3">{{post.title}}</h2><i> in <router-link :to="{name:'Home', params: {category: convertCat(post.category)}}">{{post.category}}</router-link></i><v-spacer /><span class="px-3">by {{post.poster.name}} - {{post.date.toJSON().substr(0,10).split('-').reverse().join('/')}}</span></v-card-title>
+                <v-card-text v-if="post.content">
+                  <div v-html="post.content.substr(0,500) + ' ...'" class="text-xs-left"></div>
                 </v-card-text>
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn color="primary" flat :to="`posts/${posts[0]._id}`">Read More</v-btn>
+                  <v-btn color="primary" flat :to="`posts/${post._id}`">Read More</v-btn>
                 </v-card-actions>
               </v-card>
             </v-flex>
@@ -71,7 +71,8 @@ export default {
   name: 'HomePage',
   data () {
     return {
-      posts: []
+      posts: [],
+      featuredPosts: []
     }
   },
   watch: {
@@ -84,11 +85,16 @@ export default {
   methods: {
     async fetchPosts (cat) {
       const posts = (await NewsService.index(cat)).data
+      const fposts = []
       for (var i = 0; i < posts.length; i++) {
         posts[i].poster = (await UserService.get(posts[i].posterId)).data
         posts[i].date = new Date(posts[i].date)
+        if (posts[i].featured) {
+          fposts.push(posts[i])
+        }
       }
       this.posts = posts
+      this.featuredPosts = fposts
     },
     convertCat (cat) {
       if (cat === 'School News') {

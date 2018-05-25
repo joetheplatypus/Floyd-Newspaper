@@ -52,10 +52,6 @@ module.exports = {
   },
   async put (req,res) {
     try {
-      if(req.body.posterId !== req.userId) {
-        res.send({error:'Cannot post as someone else'})
-        return
-      }
       const newsItem = await News.findOne({_id:req.params.itemId})
       const user = await User.findOne({_id:req.userId})
       if(newsItem.status === 'draft') {

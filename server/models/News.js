@@ -28,6 +28,10 @@ const postSchema = mongoose.Schema({
   status: {
     type: String,
     required: true
+  },
+  featured: {
+    type: Boolean,
+    default: false
   }
 })
 

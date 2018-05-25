@@ -97,7 +97,7 @@
         </v-data-table>
         <h1 class="title ma-3 pt-3">- All active posts -</h1>
         <v-data-table
-          :headers="adminHeaders"
+          :headers="allAdminHeaders"
           :items="activePosts"
           hide-actions
           class="elevation-1"
@@ -106,6 +106,10 @@
           <td class="text-xs-left">{{ props.item.title }}</td>
           <td class="text-xs-left">{{ props.item.poster.name }}</td>
           <td class="text-xs-left">{{ props.item.date.toJSON().substr(0,10).split('-').reverse().join('/')}}</td>
+          <td class="">
+            <v-checkbox class="mx-0" v-model="props.item.featured" @click="featurePost(props.item)">
+            </v-checkbox>
+          </td>
           <td class="text-xs-right px-0 pr-3">
             <v-btn icon class="mx-0" @click="viewPost(props.item)">
               <v-icon color="primary">visibility</v-icon>
@@ -113,7 +117,7 @@
             <v-btn icon class="mx-0" @click="editPost(props.item)">
               <v-icon color="primary">edit</v-icon>
             </v-btn>
-            <v-btn icon class="mx-0 mr-3" @click="checkDeletePost(props.item)">
+            <v-btn icon class="mx-0" @click="checkDeletePost(props.item)">
               <v-icon color="primary">delete</v-icon>
             </v-btn>
           </td>
@@ -176,6 +180,13 @@ export default {
         { text: 'News Item', value: 'title' },
         { text: 'Author', value: 'author' },
         { text: 'Created at', value: 'date' },
+        { text: '', value: 'actions' }
+      ],
+      allAdminHeaders: [
+        { text: 'News Item', value: 'title' },
+        { text: 'Author', value: 'author' },
+        { text: 'Created at', value: 'date' },
+        { text: 'Featured', value: 'featured' },
         { text: '', value: 'actions' }
       ],
       posts: [],
@@ -269,7 +280,9 @@ export default {
       const response = (await NewsService.delete(this.deleteDialogPost._id)).data
       if (response.error) {
         this.error = response.error
+        return
       }
+      this.$emit('snack', 'Post deleted')
       this.deleteDialogPost = {}
       this.deleteDialog = false
       this.fetchData()
@@ -279,11 +292,12 @@ export default {
       this.approveDialogPost = {}
       this.approveDialog = false
       item.status = 'approved'
-      const response = (await NewsService.putPreview(item)).data
+      const response = (await NewsService.put(item)).data
       if (response.error) {
         console.log(response.error)
         return
       }
+      this.$emit('snack', 'Post approved')
       this.$router.push({
         name: 'ViewPost',
         params: {
@@ -296,10 +310,24 @@ export default {
       this.submitDialogPost = {}
       this.submitDialog = false
       item.status = 'pending'
-      const response = (await NewsService.putPreview(item)).data
+      const response = (await NewsService.put(item)).data
       if (response.error) {
         console.log(response.error)
         return
+      }
+      this.$emit('snack', 'Post submitted for approval')
+      this.fetchData()
+    },
+    async featurePost (item) {
+      const response = (await NewsService.put(item)).data
+      if (response.error) {
+        console.log(response.error)
+        return
+      }
+      if (item.featured) {
+        this.$emit('snack', 'Added to featured posts')
+      } else {
+        this.$emit('snack', 'Removed from featured posts')
       }
       this.fetchData()
     }
