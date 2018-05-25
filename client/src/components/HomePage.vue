@@ -8,7 +8,7 @@
         bottom
         right
         color="primary"
-        to="dashboard"
+        :to="{name: 'Dashboard'}"
       >
         <v-icon>dashboard</v-icon>
       </v-btn>

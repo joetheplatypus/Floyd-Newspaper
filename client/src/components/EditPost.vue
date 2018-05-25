@@ -14,6 +14,7 @@
         <vue-editor v-model="post.content"></vue-editor>
         <v-btn @click.prevent="submit()" flat color="primary">Save</v-btn>
       </v-form>
+      <div>{{smallError}}</div>
     </v-flex>
   </v-container>
 </template>
@@ -33,6 +34,7 @@ export default {
         status: '',
         posterId: this.$store.getters.userId
       },
+      smallError: '',
       error: null
     }
   },
@@ -48,10 +50,16 @@ export default {
       this.post = post
     },
     async submit () {
+      this.post.posterId = this.$store.getters.userId
+      if (this.post.title.length === 0 || this.post.content.length === 0 || this.post.category.length === 0 || this.post.imgurl.length === 0) {
+        this.smallError = 'Missing Fields'
+        return
+      }
+      this.smallError = ''
       this.error = ''
-      const response = (await NewsService.putPreview(this.post)).data
+      const response = (await NewsService.put(this.post)).data
       if (response.error) {
-        this.error = response.error
+        this.smallError = response.error
       } else {
         this.$router.push({
           name: 'Dashboard'

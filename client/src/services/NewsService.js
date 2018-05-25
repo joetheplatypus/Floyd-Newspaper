@@ -14,10 +14,16 @@ export default {
   get (id) {
     return Api().get(`posts/${id}`)
   },
+  delete (id) {
+    return Api().delete(`posts/${id}`)
+  },
   getPreview (id) {
     return Api().get(`posts/${id}/preview`)
   },
-  putPreview (item) {
-    return Api().put(`posts/${item._id}/preview`, item)
+  // putPreview (item) {
+  //   return Api().put(`posts/${item._id}/preview`, item)
+  // },
+  put (item) {
+    return Api().put(`posts/${item._id}`, item)
   }
 }

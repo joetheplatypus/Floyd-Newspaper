@@ -12,7 +12,7 @@ module.exports = function(app) {
   app.put('/posts/:itemId', CheckToken, NewsController.put)
   app.delete('/posts/:itemId', CheckToken, NewsController.delete)
   app.get('/posts/:itemId/preview', CheckToken, NewsController.getPreview)
-  app.put('/posts/:itemId/preview', CheckToken, NewsController.putPreview)
+  // app.put('/posts/:itemId/preview', CheckToken, NewsController.putPreview)
 
   //users
   app.post('/login', UserController.login)

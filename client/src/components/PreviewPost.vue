@@ -1,5 +1,18 @@
 <template>
   <v-container>
+    <v-card v-if="$store.getters.loggedIn">
+      <v-btn
+        fixed
+        dark
+        fab
+        bottom
+        right
+        color="primary"
+        :to="{name: 'Dashboard'}"
+      >
+        <v-icon>dashboard</v-icon>
+      </v-btn>
+    </v-card>
     <v-flex xs8 offset-xs2>
       <h3 class="err title" v-if="error">{{error}}</h3>
       <v-card v-if="!error">

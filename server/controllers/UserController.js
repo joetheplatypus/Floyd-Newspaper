@@ -70,6 +70,7 @@ module.exports = {
       if(user.admin) {
         response.admin = true
         response.posts = await News.find({status:'pending'}).sort('-date')
+        response.activePosts = await News.find({status:'approved'}).sort('-date')
         res.send(response)
       } else {
         response.admin = false

@@ -8,7 +8,8 @@ export default new Vuex.Store({
   state: {
     token: null,
     user: {
-      _id: null
+      _id: null,
+      admin: false
     },
     loggedIn: false
   },
@@ -38,6 +39,7 @@ export default new Vuex.Store({
   getters: {
     token: state => state.token,
     loggedIn: state => state.loggedIn,
+    admin: state => state.user.admin,
     userId: state => state.user._id || null
   }
 })

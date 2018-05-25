@@ -1,6 +1,6 @@
 <template>
   <div class="fullheight">
-    <v-card v-if="$store.getters.loggedIn">
+    <v-card v-if="$store.getters.loggedIn && $store.getters.admin === false">
         <v-btn
           fixed
           dark
@@ -32,10 +32,7 @@
             <v-btn icon class="mx-0" @click="previewPost(props.item)">
               <v-icon color="primary">visibility</v-icon>
             </v-btn>
-            <v-btn icon class="mx-0" @click="editPost(props.item)">
-              <v-icon color="primary">edit</v-icon>
-            </v-btn>
-            <v-btn icon class="mx-0" @click="deletePost(props.item)">
+            <v-btn icon class="mx-0" @click="checkDeletePost(props.item)">
               <v-icon color="primary">delete</v-icon>
             </v-btn>
           </td>
@@ -58,10 +55,10 @@
             <v-btn icon class="mx-0" @click="editPost(props.item)">
               <v-icon color="primary">edit</v-icon>
             </v-btn>
-            <v-btn icon class="mx-0 mr-3" @click="deletePost(props.item)">
+            <v-btn icon class="mx-0 mr-3" @click="checkDeletePost(props.item)">
               <v-icon color="primary">delete</v-icon>
             </v-btn>
-            <v-btn icon class="ml-3 mr-0" color="primary" @click="submitPost(props.item)">
+            <v-btn icon class="ml-3 mr-0" color="primary" @click="checkSubmitPost(props.item)">
               <v-icon color="white">send</v-icon>
             </v-btn>
           </td>
@@ -89,16 +86,76 @@
             <v-btn icon class="mx-0" @click="editPost(props.item)">
               <v-icon color="primary">edit</v-icon>
             </v-btn>
-            <v-btn icon class="mx-0 mr-3" @click="deletePost(props.item)">
+            <v-btn icon class="mx-0 mr-3" @click="checkDeletePost(props.item)">
               <v-icon color="primary">delete</v-icon>
             </v-btn>
-            <v-btn icon class="ml-3 mr-0" color="primary" @click="approvePost(props.item)">
+            <v-btn icon class="ml-3 mr-0" color="primary" @click="checkApprovePost(props.item)">
               <v-icon color="white">done</v-icon>
             </v-btn>
           </td>
         </template>
         </v-data-table>
+        <h1 class="title ma-3 pt-3">- All active posts -</h1>
+        <v-data-table
+          :headers="adminHeaders"
+          :items="activePosts"
+          hide-actions
+          class="elevation-1"
+        >
+        <template slot="items" slot-scope="props">
+          <td class="text-xs-left">{{ props.item.title }}</td>
+          <td class="text-xs-left">{{ props.item.poster.name }}</td>
+          <td class="text-xs-left">{{ props.item.date.toJSON().substr(0,10).split('-').reverse().join('/')}}</td>
+          <td class="text-xs-right px-0 pr-3">
+            <v-btn icon class="mx-0" @click="viewPost(props.item)">
+              <v-icon color="primary">visibility</v-icon>
+            </v-btn>
+            <v-btn icon class="mx-0" @click="editPost(props.item)">
+              <v-icon color="primary">edit</v-icon>
+            </v-btn>
+            <v-btn icon class="mx-0 mr-3" @click="checkDeletePost(props.item)">
+              <v-icon color="primary">delete</v-icon>
+            </v-btn>
+          </td>
+        </template>
+        </v-data-table>
       </v-container>
+      <v-dialog v-model="deleteDialog" max-width="290">
+        <v-card>
+          <v-card-title class="headline">Are you sure you want to delete this post?</v-card-title>
+          <v-card-text>This action cannot be undone</v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="grey darken-1" flat="flat" @click.native="deleteDialog = false">No</v-btn>
+            <v-btn color="red darken-1" flat="flat" @click.native="deletePost()">Yes</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <v-dialog v-model="submitDialog" max-width="290">
+        <v-card>
+          <v-card-title class="headline">Are you sure you want to submit this post for approval?</v-card-title>
+          <v-card-text>This post cannot be edited while pending approval</v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="grey darken-1" flat="flat" @click.native="submitDialog = false">No</v-btn>
+            <v-btn color="primary" flat="flat" @click.native="submitPost()">Yes</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <v-dialog v-model="approveDialog" max-width="290">
+        <v-card>
+          <v-card-title class="headline">Are you sure you want to approve this post?</v-card-title>
+          <v-card-text>This action cannot be undone</v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="grey darken-1" flat="flat" @click.native="approveDialog = false">No</v-btn>
+            <v-btn color="primary" flat="flat" @click.native="approvePost()">Yes</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <router-link to="logout">
+        Logout
+      </router-link>
     </v-flex>
   </div>
 </template>
@@ -123,7 +180,14 @@ export default {
       ],
       posts: [],
       draftPosts: [],
+      activePosts: [],
       admin: false,
+      deleteDialog: false,
+      deleteDialogPost: {},
+      submitDialog: false,
+      submitDialogPost: {},
+      approveDialog: false,
+      approveDialogPost: {},
       error: ''
     }
   },
@@ -146,6 +210,12 @@ export default {
           posts[j].date = new Date(posts[j].date)
         }
         this.posts = posts
+        const aposts = data.activePosts
+        for (var l = 0; l < aposts.length; l++) {
+          aposts[l].poster = (await UserService.get(aposts[l].posterId)).data
+          aposts[l].date = new Date(aposts[l].date)
+        }
+        this.activePosts = aposts
       } else {
         const posts = data.posts
         for (var i = 0; i < posts.length; i++) {
@@ -175,10 +245,39 @@ export default {
         }
       })
     },
-    deletePost () {
-
+    viewPost (item) {
+      this.$router.push({
+        name: 'ViewPost',
+        params: {
+          postId: item._id
+        }
+      })
     },
-    async approvePost (item) {
+    checkDeletePost (item) {
+      this.deleteDialog = true
+      this.deleteDialogPost = item
+    },
+    checkSubmitPost (item) {
+      this.submitDialog = true
+      this.submitDialogPost = item
+    },
+    checkApprovePost (item) {
+      this.approveDialog = true
+      this.approveDialogPost = item
+    },
+    async deletePost () {
+      const response = (await NewsService.delete(this.deleteDialogPost._id)).data
+      if (response.error) {
+        this.error = response.error
+      }
+      this.deleteDialogPost = {}
+      this.deleteDialog = false
+      this.fetchData()
+    },
+    async approvePost () {
+      const item = this.approveDialogPost
+      this.approveDialogPost = {}
+      this.approveDialog = false
       item.status = 'approved'
       const response = (await NewsService.putPreview(item)).data
       if (response.error) {
@@ -192,7 +291,10 @@ export default {
         }
       })
     },
-    async submitPost (item) {
+    async submitPost () {
+      const item = this.submitDialogPost
+      this.submitDialogPost = {}
+      this.submitDialog = false
       item.status = 'pending'
       const response = (await NewsService.putPreview(item)).data
       if (response.error) {

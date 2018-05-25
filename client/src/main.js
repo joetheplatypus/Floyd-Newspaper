@@ -6,6 +6,9 @@ import router from './router'
 import Vuetify from 'vuetify'
 import store from '@/store'
 import 'vuetify/dist/vuetify.min.css'
+import VueCkeditor from 'vue-ckeditor2'
+
+Vue.use(VueCkeditor)
 
 Vue.use(Vuetify, {
   theme: {

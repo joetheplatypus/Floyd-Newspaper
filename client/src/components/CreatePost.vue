@@ -10,12 +10,25 @@
           <v-radio label="World" value="World"></v-radio>
         </v-radio-group>
         <v-text-field label="Image URL" v-model="post.imgurl"></v-text-field>
-        <vue-editor v-model="post.content"></vue-editor>
+        <textarea name="content" id="editor" v-model="post.content" />
+        <!-- <vue-ckeditor v-model="post.content" :config="config" /> -->
+        <!-- <vue-editor v-model="post.content"></vue-editor> -->
         <v-btn @click.prevent="save()" flat color="primary">Save as draft</v-btn>
-        <v-btn @click.prevent="submit()" flat color="primary">Submit</v-btn>
+        <v-btn @click.prevent="submitDialog = true" flat color="primary">Submit</v-btn>
       </v-form>
-      <div>{{error}}{{post.content}}</div>
+      <div>{{error}}</div>
     </v-flex>
+    <v-dialog v-model="submitDialog" max-width="290">
+      <v-card>
+        <v-card-title class="headline">Are you sure you want to submit this post for approval?</v-card-title>
+        <v-card-text>This post cannot be edited while pending approval</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="grey darken-1" flat="flat" @click.native="submitDialog = false">No</v-btn>
+          <v-btn color="primary" flat="flat" @click.native="submit()">Yes</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -34,34 +47,60 @@ export default {
         status: '',
         posterId: this.$store.getters.userId
       },
-      error: ''
+      error: '',
+      config: {
+        // toolbar: [
+        //   [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript' ]
+        // ],
+        height: 800
+      },
+      editor: null,
+      submitDialog: false
     }
   },
   methods: {
     async submit () {
+      this.post.content = this.editor.getData()
+      this.post.posterId = this.$store.getters.userId
+      if (this.post.title.length === 0 || this.post.content.length === 0 || this.post.category.length === 0 || this.post.imgurl.length === 0) {
+        console.log(this.post)
+        this.error = 'Missing Fields'
+        return
+      }
       this.post.status = 'pending'
       this.error = ''
       const response = (await NewsService.post(this.post)).data
       if (response.error) {
         this.error = response.error
       } else {
+        this.$emit('snack', 'Post submitted for approval')
         this.$router.push({
           name: 'Dashboard'
         })
       }
     },
     async save () {
+      this.post.content = this.editor.getData()
+      this.post.posterId = this.$store.getters.userId
+      if (this.post.title.length === 0 || this.post.content.length === 0 || this.post.category.length === 0 || this.post.imgurl.length === 0) {
+        this.error = 'Missing Fields'
+        return
+      }
       this.post.status = 'draft'
       this.error = ''
       const response = (await NewsService.post(this.post)).data
       if (response.error) {
         this.error = response.error
       } else {
+        this.$emit('snack', 'Post saved as draft')
         this.$router.push({
           name: 'Dashboard'
         })
       }
     }
+  },
+  async mounted () {
+    this.editor = await ClassicEditor.create(document.querySelector('#editor'))
   },
   components: {
     VueEditor

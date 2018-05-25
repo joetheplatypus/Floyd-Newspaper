@@ -3,7 +3,15 @@
     <v-app>
       <toolbar></toolbar>
       <v-content>
-        <router-view/>
+        <v-snackbar
+          :timeout=tm
+          top
+          v-model="snackbar"
+        >
+          {{ text }}
+          <v-btn flat color="accent" @click.native="snackbar = false">Close</v-btn>
+        </v-snackbar>
+        <router-view @snack="snackFunc"/>
       </v-content>
     </v-app>
   </div>
@@ -18,6 +26,13 @@ export default {
   components: {
     'toolbar': Toolbar
   },
+  data () {
+    return {
+      snackbar: false,
+      text: '',
+      tm: 5000
+    }
+  },
   async created () {
     const tok = window.localStorage.getItem('token')
     if (tok !== '') {
@@ -31,6 +46,12 @@ export default {
       }
     } else {
       this.$store.dispatch('setToken', '')
+    }
+  },
+  methods: {
+    snackFunc (data) {
+      this.text = data
+      this.snackbar = true
     }
   }
 }
