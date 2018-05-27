@@ -17,6 +17,7 @@
       <v-container>
         <h1 class="display-2">The Floyd News</h1>
         <h2 class="ma-3 headline">{{convertedCat($route.params.category)}}</h2>
+        <v-alert :value=alert outline type="error">{{error}}</v-alert>
         <v-container>
           <v-layout row class="mb-3">
             <v-flex xs8>
@@ -72,7 +73,9 @@ export default {
   data () {
     return {
       posts: [],
-      featuredPosts: []
+      featuredPosts: [],
+      error: '',
+      alert: true
     }
   },
   watch: {
@@ -84,6 +87,8 @@ export default {
   },
   methods: {
     async fetchPosts (cat) {
+      this.error = ''
+      this.alert = false
       const posts = (await NewsService.index(cat)).data
       const fposts = []
       for (var i = 0; i < posts.length; i++) {
@@ -114,7 +119,11 @@ export default {
         return 'Politics'
       } else if (cat === 'world') {
         return 'World'
+      } else if (cat === undefined) {
+        return ''
       } else {
+        this.error = 'cannot find category'
+        this.alert = true
         return ''
       }
     }

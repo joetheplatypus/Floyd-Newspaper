@@ -1,5 +1,16 @@
 const News = require('../models/News')
 const User = require('../models/User')
+const Loki = require('lokijs')
+const db = require('../server')
+
+const loadCollection = function (colName, db) {
+  return new Promise(resolve => {
+      db.loadDatabase({}, () => {
+          const _collection = db.getCollection(colName) || db.addCollection(colName);
+          resolve(_collection);
+      })
+  })
+}
 
 module.exports = {
   async post (req,res) {
@@ -110,25 +121,12 @@ module.exports = {
     } catch (err) {
       res.send(err)
     }
+  },
+  async uploadImg (req, res) {
+    try {
+      res.send({filename: req.file.filename})
+    } catch (err) {
+        res.sendStatus(400);
+    }
   }
-  // async putPreview (req, res) {
-  //   try {
-  //     const user = await User.findOne({_id:req.userId})
-  //     const newsItem = await News.findOne({_id:req.params.itemId})
-  //     if (newsItem.status === 'pending' && !user.admin) {
-  //       res.send({error:'Cannot update post while it is pending approval'})
-  //       return
-  //     }
-  //     if (user.admin || user.id === newsItem.posterId) {
-  //       req.body.date = new Date()
-  //       item = await News.findOneAndUpdate({_id: req.params.itemId},req.body,{new:true})
-  //     res.send(item)
-  //     } else {
-  //       const error = 'not authorised to preview this post'
-  //       res.send({error:error})
-  //     }
-  //   } catch (err) {
-  //     res.send(err)
-  //   }
-  // },
 }

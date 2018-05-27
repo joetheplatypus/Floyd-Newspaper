@@ -14,7 +14,6 @@
 
 <script>
 import UserService from '@/services/UserService'
-
 export default {
   data () {
     return {
@@ -28,7 +27,8 @@ export default {
   methods: {
     async login () {
       this.error = ''
-      const response = (await UserService.login(this.user)).data
+      const creds = this.user
+      const response = (await UserService.login(creds)).data
       if (response.auth) {
         this.$store.dispatch('setToken', response.token)
         this.$store.dispatch('setUser', response.user)

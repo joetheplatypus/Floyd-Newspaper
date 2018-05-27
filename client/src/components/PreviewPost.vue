@@ -22,7 +22,9 @@
         />
         <v-card-title><h2 class="px-3">{{post.title}}</h2><i> in <router-link :to="{name:'Home', params: {category: convertCat(post.category)}}">{{post.category}}</router-link></i><v-spacer /><span class="px-3">by {{post.poster.name}} - {{post.date.toJSON().substr(0,10).split('-').reverse().join('/')}}</span></v-card-title>
         <v-card-text>
-          <div v-html="post.content" class="text-xs-left"></div>
+          <v-container>
+            <div v-html="post.content" class="mycontent text-xs-left body-1"></div>
+          </v-container>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -82,5 +84,14 @@ export default {
   background-color:white;
   padding: 20px 50px;
   margin-top: 30px
+}
+.mycontent >>> .ql-align-right {
+  text-align: right
+}
+.mycontent >>> .ql-align-center {
+  text-align: center
+}
+.mycontent >>> .ql-align-left {
+  text-align: left
 }
 </style>

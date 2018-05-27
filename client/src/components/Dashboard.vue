@@ -27,6 +27,7 @@
         >
         <template slot="items" slot-scope="props">
           <td class="text-xs-left">{{ props.item.title }}</td>
+          <td class="text-xs-left">{{ props.item.category }}</td>
           <td class="text-xs-left">{{ props.item.date.toJSON().substr(0,10).split('-').reverse().join('/')}}</td>
           <td class="text-xs-right px-0 pr-3">
             <v-btn icon class="mx-0" @click="previewPost(props.item)">
@@ -47,6 +48,7 @@
         >
         <template slot="items" slot-scope="props">
           <td class="text-xs-left">{{ props.item.title }}</td>
+          <td class="text-xs-left">{{ props.item.category }}</td>
           <td class="text-xs-left">{{ props.item.date.toJSON().substr(0,10).split('-').reverse().join('/')}}</td>
           <td class="text-xs-right px-0 pr-3">
             <v-btn icon class="mx-0" @click="previewPost(props.item)">
@@ -77,6 +79,7 @@
         >
         <template slot="items" slot-scope="props">
           <td class="text-xs-left">{{ props.item.title }}</td>
+          <td class="text-xs-left">{{ props.item.category }}</td>
           <td class="text-xs-left">{{ props.item.poster.name }}</td>
           <td class="text-xs-left">{{ props.item.date.toJSON().substr(0,10).split('-').reverse().join('/')}}</td>
           <td class="text-xs-right px-0 pr-3">
@@ -104,6 +107,7 @@
         >
         <template slot="items" slot-scope="props">
           <td class="text-xs-left">{{ props.item.title }}</td>
+          <td class="text-xs-left">{{ props.item.category }}</td>
           <td class="text-xs-left">{{ props.item.poster.name }}</td>
           <td class="text-xs-left">{{ props.item.date.toJSON().substr(0,10).split('-').reverse().join('/')}}</td>
           <td class="">
@@ -173,17 +177,20 @@ export default {
     return {
       headers: [
         { text: 'News Item', value: 'title' },
+        { text: 'Category', value: 'category' },
         { text: 'Created at', value: 'date' },
         { text: '', value: 'actions' }
       ],
       adminHeaders: [
         { text: 'News Item', value: 'title' },
+        { text: 'Category', value: 'category' },
         { text: 'Author', value: 'author' },
         { text: 'Created at', value: 'date' },
         { text: '', value: 'actions' }
       ],
       allAdminHeaders: [
         { text: 'News Item', value: 'title' },
+        { text: 'Category', value: 'category' },
         { text: 'Author', value: 'author' },
         { text: 'Created at', value: 'date' },
         { text: 'Featured', value: 'featured' },

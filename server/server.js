@@ -6,11 +6,13 @@ const routes = require('./routes');
 const cors = require('cors');
 const config = require('./config')
 
+
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({
   extended: true
 }))
 app.use(cors())
+app.use(express.static('user-uploads'))
 
 const db = {};
 mongoose.connect('mongodb://localhost:27017/connected', function() { /* dummy function */ })

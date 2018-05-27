@@ -25,5 +25,8 @@ export default {
   // },
   put (item) {
     return Api().put(`posts/${item._id}`, item)
+  },
+  uploadImg (data) {
+    return Api().post('uploadImg', data)
   }
 }

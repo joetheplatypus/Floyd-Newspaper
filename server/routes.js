@@ -1,5 +1,8 @@
 const NewsController = require('./controllers/NewsController');
 const UserController = require('./controllers/UserController');
+const upload = require('./upload')
+
+
 
 //checks for login, if not sends error
 const CheckToken = require('./middleware/CheckToken')
@@ -12,7 +15,7 @@ module.exports = function(app) {
   app.put('/posts/:itemId', CheckToken, NewsController.put)
   app.delete('/posts/:itemId', CheckToken, NewsController.delete)
   app.get('/posts/:itemId/preview', CheckToken, NewsController.getPreview)
-  // app.put('/posts/:itemId/preview', CheckToken, NewsController.putPreview)
+  app.post('/uploadImg', CheckToken, upload.single('img'), NewsController.uploadImg)
 
   //users
   app.post('/login', UserController.login)

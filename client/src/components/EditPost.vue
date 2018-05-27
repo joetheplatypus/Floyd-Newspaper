@@ -10,12 +10,29 @@
           <v-radio label="Politics" value="Politics"></v-radio>
           <v-radio label="World" value="World"></v-radio>
         </v-radio-group>
-        <v-text-field label="Image URL" v-model="post.imgurl"></v-text-field>
+        <v-layout row>
+          <v-flex xs10>
+            <v-text-field label="Image URL" v-model="post.imgurl"></v-text-field>
+          </v-flex>
+          <v-flex xs2>
+            <v-btn color="primary" flat @click="uploadImg = true">Upload</v-btn>
+          </v-flex>
+        </v-layout>
         <vue-editor v-model="post.content"></vue-editor>
         <v-btn @click.prevent="submit()" flat color="primary">Save</v-btn>
       </v-form>
       <div>{{smallError}}</div>
     </v-flex>
+    <v-dialog v-model="uploadImg" max-width="290">
+      <v-card>
+        <v-card-title class="headline">Upload an image</v-card-title>
+        <v-card-text>
+          <v-form enctype="multipart/form-data">
+            <input type="file" name="img" @change="upload($event)">
+          </v-form>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -35,7 +52,8 @@ export default {
         posterId: this.$store.getters.userId
       },
       smallError: '',
-      error: null
+      error: null,
+      uploadImg: false
     }
   },
   async mounted () {
@@ -50,7 +68,9 @@ export default {
       this.post = post
     },
     async submit () {
-      this.post.posterId = this.$store.getters.userId
+      if (this.post.posterId === '') {
+        this.post.posterId = this.$store.getters.userId
+      }
       if (this.post.title.length === 0 || this.post.content.length === 0 || this.post.category.length === 0 || this.post.imgurl.length === 0) {
         this.smallError = 'Missing Fields'
         return
@@ -65,6 +85,21 @@ export default {
         this.$router.push({
           name: 'Dashboard'
         })
+      }
+    },
+    async upload (data) {
+      const formData = new FormData()
+      formData.append(data.target.name, data.target.files[0])
+
+      for (var pair of formData.entries()) {
+        console.log(pair[0] + ', ' + pair[1])
+      }
+      const response = (await NewsService.uploadImg(formData)).data
+      if (response.filename) {
+        this.post.imgurl = `http://localhost:8081/${response.filename}`
+        this.uploadImg = false
+      } else {
+        this.error = 'an error occured uploading the image'
       }
     }
   },
