@@ -14,7 +14,7 @@
         </v-btn>
     </v-card>
     <div class="red">{{error}}</div>
-    <v-flex xs8 offset-xs2 class="offwhite fullheight" height="100%" v-if='!error'>
+    <v-flex md8 offset-md2 class="offwhite fullheight" height="100%" v-if='!error'>
       <v-container v-if="!admin">
         <h1 class="display-2">The Floyd News</h1>
         <h1 class="headline ma-3">Author Dashboard</h1>

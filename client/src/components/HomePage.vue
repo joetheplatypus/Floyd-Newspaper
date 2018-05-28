@@ -13,14 +13,14 @@
         <v-icon>dashboard</v-icon>
       </v-btn>
   </v-card>
-    <v-flex xs8 offset-xs2 class="offwhite fullheight" height="100%">
+    <v-flex md8 offset-md2 class="offwhite fullheight" height="100%">
       <v-container>
         <h1 class="display-2">The Floyd News</h1>
         <h2 class="ma-3 headline">{{convertedCat($route.params.category)}}</h2>
         <v-alert :value=alert outline type="error">{{error}}</v-alert>
-        <v-container>
-          <v-layout row class="mb-3">
-            <v-flex xs8>
+        <v-container :class="{'pa-0': $vuetify.breakpoint.smAndDown, '': $vuetify.breakpoint.mdAndUp}">
+          <v-layout row wrap class="mb-3">
+            <v-flex sm8 xs12>
               <h3 class="mb-3">Featured Posts</h3>
               <v-card class="my-2" v-for="post in featuredPosts" :key="post._id">
                 <v-card-media
@@ -37,8 +37,8 @@
                 </v-card-actions>
               </v-card>
             </v-flex>
-            <v-flex xs4 class="pl-3">
-              <h3 class="mb-3">Latest Posts</h3>
+            <v-flex sm4 xs12 :class="{'': $vuetify.breakpoint.xsAndDown, 'pl-3': $vuetify.breakpoint.smAndUp}">
+              <h3 :class="{'my-3': $vuetify.breakpoint.smAndDown, 'mb-3': $vuetify.breakpoint.smAndUp}">Latest Posts</h3>
               <v-card class="my-2" v-for="post in posts" :key="post._id">
                 <v-card-media
                   :src="post.imgurl"

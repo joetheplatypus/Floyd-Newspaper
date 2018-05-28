@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <h1>Login</h1>
-    <v-flex xs6 offset-xs3 class="box" elevation-1>
+    <v-flex md6 offset-md3 class="box" elevation-1>
       <v-form>
         <v-text-field label="email" v-model="user.email"></v-text-field>
         <v-text-field label="password" v-model="user.password"></v-text-field>
