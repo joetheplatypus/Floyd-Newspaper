@@ -2,9 +2,9 @@
   <v-container>
     <h1>Login</h1>
     <v-flex md6 offset-md3 class="box" elevation-1>
-      <v-form @submit="login()">
+      <v-form @submit.prevent="login()">
         <v-text-field label="email" v-model="user.email"></v-text-field>
-        <v-text-field label="password" v-model="user.password"></v-text-field>
+        <v-text-field type="password" label="password" v-model="user.password"></v-text-field>
         <v-btn type="submit" flat color="primary">Login</v-btn>
       </v-form>
       <div>{{error}}</div>

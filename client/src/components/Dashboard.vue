@@ -57,7 +57,7 @@
             <v-btn icon class="mx-0" @click="editPost(props.item)">
               <v-icon color="primary">edit</v-icon>
             </v-btn>
-            <v-btn icon class="mx-0 mr-3" @click="checkDeletePost(props.item)">
+            <v-btn icon class="mx-0" @click="checkDeletePost(props.item)">
               <v-icon color="primary">delete</v-icon>
             </v-btn>
             <v-btn icon class="ml-3 mr-0" color="primary" @click="checkSubmitPost(props.item)">
@@ -89,7 +89,7 @@
             <v-btn icon class="mx-0" @click="editPost(props.item)">
               <v-icon color="primary">edit</v-icon>
             </v-btn>
-            <v-btn icon class="mx-0 mr-3" @click="checkDeletePost(props.item)">
+            <v-btn icon class="mx-0" @click="checkDeletePost(props.item)">
               <v-icon color="primary">delete</v-icon>
             </v-btn>
             <v-btn icon class="ml-3 mr-0" color="primary" @click="checkApprovePost(props.item)">

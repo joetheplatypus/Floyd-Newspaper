@@ -94,4 +94,8 @@ export default {
 .mycontent >>> .ql-align-left {
   text-align: left
 }
+.mycontent >>> span img {
+  max-width: 100%;
+  height: auto;
+}
 </style>

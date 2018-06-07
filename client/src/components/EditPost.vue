@@ -1,20 +1,25 @@
 <template>
   <v-container>
     <h1>Edit a news item</h1>
-    <v-flex xs8 offset-xs2 class="box" elevation-1>
+    <v-flex sm8 offset-sm2 :class="{'px-3': $vuetify.breakpoint.smAndDown, 'box': $vuetify.breakpoint.mdAndUp}" elevation-1>
       <h3 class="err title" v-if="error">{{error}}</h3>
       <v-form v-if="!error">
         <v-text-field label="Title" v-model="post.title"></v-text-field>
-        <v-radio-group v-model="post.category" row>
+        <v-radio-group v-model="post.category" row v-if="$vuetify.breakpoint.mdAndUp">
           <v-radio label="School News" value="School News" ></v-radio>
           <v-radio label="Politics" value="Politics"></v-radio>
           <v-radio label="World" value="World"></v-radio>
         </v-radio-group>
-        <v-layout row>
-          <v-flex xs10>
+        <v-radio-group v-model="post.category" column v-if="$vuetify.breakpoint.smAndDown">
+          <v-radio label="School News" value="School News" ></v-radio>
+          <v-radio label="Politics" value="Politics"></v-radio>
+          <v-radio label="World" value="World"></v-radio>
+        </v-radio-group>
+        <v-layout row wrap>
+          <v-flex sm10 xs12>
             <v-text-field label="Image URL" v-model="post.imgurl"></v-text-field>
           </v-flex>
-          <v-flex xs2>
+          <v-flex sm2 xs12>
             <v-btn color="primary" flat @click="uploadImg = true">Upload</v-btn>
           </v-flex>
         </v-layout>
