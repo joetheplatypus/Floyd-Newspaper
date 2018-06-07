@@ -1,6 +1,6 @@
 <template>
   <div class="pa-0 ma-0 cont">
-    <v-toolbar app dark color="primary">
+    <v-toolbar app dark color="primary" class="mainToolbar">
       <img src="https://www.sirhenryfloyd.bucks.sch.uk/themes/floyd/images/logo.png" height="64px" width="64px" />
       <v-toolbar-title>Floyd News</v-toolbar-title>
       <v-spacer></v-spacer>
@@ -15,13 +15,14 @@
     <v-menu
       v-model="menu"
       :position-x="0"
-      :position-y="57"
+      :position-y="56"
       absolute
+      attach=".mainToolbar"
       v-if="$vuetify.breakpoint.smAndDown"
       transition="slide-y-transition"
       content-class="fullwidth hidden-md-and-up"
       class="fixmargin hidden-md-and-up">
-      <v-list>
+      <v-list light>
         <router-link :to="{name: 'Home'}" class="nodec">
           <v-list-tile>
             <v-list-tile-title>Home</v-list-tile-title>

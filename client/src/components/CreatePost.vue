@@ -51,6 +51,7 @@
 <script>
 import NewsService from '@/services/NewsService'
 import { VueEditor } from 'vue2-editor'
+import config from '@/SETTINGS'
 
 export default {
   data () {
@@ -124,7 +125,7 @@ export default {
       }
       const response = (await NewsService.uploadImg(formData)).data
       if (response.filename) {
-        this.post.imgurl = `http://localhost:8081/${response.filename}`
+        this.post.imgurl = `${config.url}/${response.filename}`
         this.uploadImg = false
       } else {
         this.error = 'an error occured uploading the image'
