@@ -1,8 +1,17 @@
 import Api from '@/services/Api'
 
 export default {
-  index (cat) {
+  index (cat, limit, start) {
     return Api().get('posts', {
+      params: {
+        cat: cat,
+        limit: limit,
+        start: start
+      }
+    })
+  },
+  indexFeatured (cat) {
+    return Api().get('posts/featured', {
       params: {
         cat: cat
       }

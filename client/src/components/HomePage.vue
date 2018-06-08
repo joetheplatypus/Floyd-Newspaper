@@ -50,6 +50,7 @@
                   <v-btn color="primary" flat :to="`posts/${post._id}`">Read More</v-btn>
                 </v-card-actions>
               </v-card>
+              <v-progress-circular v-if="loading" indeterminate color="primary"></v-progress-circular>
             </v-flex>
           </v-layout>
           <router-link to="login" v-if="!$store.getters.loggedIn">
@@ -75,31 +76,49 @@ export default {
       posts: [],
       featuredPosts: [],
       error: '',
-      alert: true
+      scroller: 0,
+      limit: 5,
+      alert: true,
+      loading: false
     }
   },
   watch: {
     '$route.params.category': { immediate: true,
       async handler (category) {
-        this.fetchPosts(category)
+        this.posts = []
+        this.featuredPosts = []
+        this.scroller = 0
+        this.fetchPosts(category, this.limit, this.scroller)
       }
     }
   },
   methods: {
-    async fetchPosts (cat) {
+    async fetchPosts (cat, limit) {
+      this.loading = true
       this.error = ''
       this.alert = false
-      const posts = (await NewsService.index(cat)).data
-      const fposts = []
+      const start = this.scroller
+      console.log(`fetching more posts from ${start} to ${start + limit}`)
+      const posts = (await NewsService.index(cat, limit, start)).data
+      if (posts.length === 0) {
+        this.loading = false
+        return
+      }
+      if (this.featuredPosts.length === 0) {
+        const fposts = (await NewsService.indexFeatured(cat)).data
+        for (var j = 0; j < fposts.length; j++) {
+          fposts[j].poster = (await UserService.get(fposts[j].posterId)).data
+          fposts[j].date = new Date(fposts[j].date)
+          this.featuredPosts.push(fposts[j])
+        }
+      }
       for (var i = 0; i < posts.length; i++) {
         posts[i].poster = (await UserService.get(posts[i].posterId)).data
         posts[i].date = new Date(posts[i].date)
-        if (posts[i].featured) {
-          fposts.push(posts[i])
-        }
+        this.posts.push(posts[i])
       }
-      this.posts = posts
-      this.featuredPosts = fposts
+      this.scroller = start + limit
+      this.loading = false
     },
     convertCat (cat) {
       if (cat === 'School News') {
@@ -126,7 +145,15 @@ export default {
         this.alert = true
         return ''
       }
+    },
+    handleScroll () {
+      if ((window.innerHeight + window.pageYOffset) > document.body.offsetHeight - 30) {
+        this.fetchPosts(this.$route.params.category, this.limit)
+      }
     }
+  },
+  created () {
+    window.addEventListener('scroll', this.handleScroll)
   }
 }
 </script>

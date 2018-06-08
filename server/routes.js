@@ -10,6 +10,7 @@ const CheckToken = require('./middleware/CheckToken')
 module.exports = function(app) {
   //news items
   app.get('/posts', NewsController.index)
+  app.get('/posts/featured', NewsController.indexFeatured)
   app.get('/posts/:itemId', NewsController.get)
   app.post('/posts', CheckToken, NewsController.post)
   app.put('/posts/:itemId', CheckToken, NewsController.put)

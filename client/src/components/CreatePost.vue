@@ -6,8 +6,8 @@
         <v-text-field
           label="Title"
           v-model="post.title"
-          :rules="[(v) => v.length <= 50 || 'Max 50 characters']"
-          :counter="50"
+          :rules="[(v) => v.length <= 100 || 'Max 100 characters']"
+          :counter="100"
         ></v-text-field>
         <v-radio-group v-model="post.category" row v-if="$vuetify.breakpoint.mdAndUp">
           <v-radio label="School News" value="School News" ></v-radio>
@@ -90,7 +90,7 @@ export default {
     async submit () {
       // this.post.content = this.editor.getData()
       this.post.posterId = this.$store.getters.userId
-      if (this.post.title.length === 0 || this.post.title.length > 50 || this.post.content.length === 0 || this.post.category.length === 0 || this.post.imgurl.length === 0) {
+      if (this.post.title.length === 0 || this.post.title.length > 100 || this.post.content.length === 0 || this.post.category.length === 0 || this.post.imgurl.length === 0) {
         console.log(this.post)
         this.error = 'Check Fields'
         return
@@ -110,7 +110,7 @@ export default {
     async save () {
       // this.post.content = this.editor.getData()
       this.post.posterId = this.$store.getters.userId
-      if (this.post.title.length === 0 || this.post.title.length > 50 || this.post.content.length === 0 || this.post.category.length === 0 || this.post.imgurl.length === 0) {
+      if (this.post.title.length === 0 || this.post.title.length > 100 || this.post.content.length === 0 || this.post.category.length === 0 || this.post.imgurl.length === 0) {
         this.error = 'Check Fields'
         return
       }
