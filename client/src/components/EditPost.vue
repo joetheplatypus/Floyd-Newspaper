@@ -4,7 +4,12 @@
     <v-flex sm8 offset-sm2 :class="{'px-3': $vuetify.breakpoint.smAndDown, 'box': $vuetify.breakpoint.mdAndUp}" elevation-1>
       <h3 class="err title" v-if="error">{{error}}</h3>
       <v-form v-if="!error">
-        <v-text-field label="Title" v-model="post.title"></v-text-field>
+        <v-text-field
+          label="Title"
+          v-model="post.title"
+          :rules="[(v) => v.length <= 50 || 'Max 50 characters']"
+          :counter="50"
+        ></v-text-field>
         <v-radio-group v-model="post.category" row v-if="$vuetify.breakpoint.mdAndUp">
           <v-radio label="School News" value="School News" ></v-radio>
           <v-radio label="Politics" value="Politics"></v-radio>
@@ -76,8 +81,8 @@ export default {
       if (this.post.posterId === '') {
         this.post.posterId = this.$store.getters.userId
       }
-      if (this.post.title.length === 0 || this.post.content.length === 0 || this.post.category.length === 0 || this.post.imgurl.length === 0) {
-        this.smallError = 'Missing Fields'
+      if (this.post.title.length === 0 || this.post.title.length > 50 || this.post.content.length === 0 || this.post.category.length === 0 || this.post.imgurl.length === 0) {
+        this.smallError = 'Check Fields'
         return
       }
       this.smallError = ''

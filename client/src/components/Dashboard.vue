@@ -22,6 +22,7 @@
         <v-data-table
           :headers="headers"
           :items="posts"
+          :loading="loading"
           hide-actions
           class="elevation-1"
         >
@@ -43,6 +44,7 @@
         <v-data-table
           :headers="headers"
           :items="draftPosts"
+          :loading="loading"
           hide-actions
           class="elevation-1"
         >
@@ -74,6 +76,7 @@
         <v-data-table
           :headers="adminHeaders"
           :items="posts"
+          :loading="loading"
           hide-actions
           class="elevation-1"
         >
@@ -102,6 +105,7 @@
         <v-data-table
           :headers="allAdminHeaders"
           :items="activePosts"
+          :loading="loading"
           hide-actions
           class="elevation-1"
         >
@@ -196,6 +200,7 @@ export default {
         { text: 'Featured', value: 'featured' },
         { text: '', value: 'actions' }
       ],
+      loading: true,
       posts: [],
       draftPosts: [],
       activePosts: [],
@@ -246,6 +251,7 @@ export default {
         }
         this.draftPosts = dposts
       }
+      this.loading = false
     },
     previewPost (item) {
       this.$router.push({
