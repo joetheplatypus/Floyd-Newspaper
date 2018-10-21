@@ -27,7 +27,7 @@
                   :src="post.imgurl"
                   height="200px"
                 />
-                <v-card-title><h2 class="px-3">{{post.title}}</h2><i> in <router-link :to="{name:'Home', params: {category: convertCat(post.category)}}">{{post.category}}</router-link></i><v-spacer /><span class="px-3">by {{post.poster.name}} - {{post.date.toJSON().substr(0,10).split('-').reverse().join('/')}}</span></v-card-title>
+                <v-card-title><h2 class="px-3">{{post.title}}</h2><i> in <router-link :to="{name:'Home', params: {category: post.category}}">{{convertedCat(post.category)}}</router-link></i><v-spacer /><span class="px-3">by {{post.poster.name}} - {{post.date.toJSON().substr(0,10).split('-').reverse().join('/')}}</span></v-card-title>
                 <v-card-text v-if="post.content">
                   <div v-html="post.content.substr(0,500) + ' ...'" class="text-xs-left"></div>
                 </v-card-text>
@@ -44,7 +44,7 @@
                   :src="post.imgurl"
                   height="200px"
                 />
-                <v-card-title><h2 class="px-3">{{post.title}}</h2><i> in <router-link :to="{name:'Home', params: {category: convertCat(post.category)}}">{{post.category}}</router-link></i><v-spacer /><span class="px-3">by {{post.poster.name}} - {{post.date.toJSON().substr(0,10).split('-').reverse().join('/')}}</span></v-card-title>
+                <v-card-title><h2 class="px-3">{{post.title}}</h2><i> in <router-link :to="{name:'Home', params: {category: post.category}}">{{convertedCat(post.category)}}</router-link></i><v-spacer /><span class="px-3">by {{post.poster.name}} - {{post.date.toJSON().substr(0,10).split('-').reverse().join('/')}}</span></v-card-title>
                 <v-card-actions>
                   <v-spacer></v-spacer>
                   <v-btn color="primary" flat :to="`posts/${post._id}`">Read More</v-btn>
@@ -77,7 +77,7 @@ export default {
       featuredPosts: [],
       error: '',
       scroller: 0,
-      limit: 5,
+      limit: 10,
       alert: true,
       loading: false
     }
@@ -121,25 +121,17 @@ export default {
       this.loading = false
     },
     convertCat (cat) {
-      if (cat === 'School News') {
-        return 'school-news'
-      } else if (cat === 'Politics') {
-        return 'politics'
-      } else if (cat === 'World') {
-        return 'world'
+      if (this.$store.getters.categoryMap.get(cat)) {
+        return this.$store.getters.categoryMap.get(cat)
       } else {
         return false
       }
     },
     convertedCat (cat) {
-      if (cat === 'school-news') {
-        return 'School News'
-      } else if (cat === 'politics') {
-        return 'Politics'
-      } else if (cat === 'world') {
-        return 'World'
-      } else if (cat === undefined) {
+      if (cat === undefined) {
         return ''
+      } else if (this.$store.getters.invCategoryMap.get(cat)) {
+        return this.$store.getters.invCategoryMap.get(cat)
       } else {
         this.error = 'cannot find category'
         this.alert = true

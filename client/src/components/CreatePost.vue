@@ -10,14 +10,10 @@
           :counter="100"
         ></v-text-field>
         <v-radio-group v-model="post.category" row v-if="$vuetify.breakpoint.mdAndUp">
-          <v-radio label="School News" value="School News" ></v-radio>
-          <v-radio label="Politics" value="Politics"></v-radio>
-          <v-radio label="World" value="World"></v-radio>
+          <v-radio v-for="category in $store.getters.categories" :key="category.value" :label="category.name" :value="category.value"></v-radio>
         </v-radio-group>
         <v-radio-group v-model="post.category" column v-if="$vuetify.breakpoint.smAndDown">
-          <v-radio label="School News" value="School News" ></v-radio>
-          <v-radio label="Politics" value="Politics"></v-radio>
-          <v-radio label="World" value="World"></v-radio>
+          <v-radio v-for="category in $store.getters.categories" :key="category.value" :label="category.name" :value="category.value"></v-radio>
         </v-radio-group>
         <v-layout row wrap>
           <v-flex sm10 xs12>
@@ -92,7 +88,7 @@ export default {
       this.post.posterId = this.$store.getters.userId
       if (this.post.title.length === 0 || this.post.title.length > 100 || this.post.content.length === 0 || this.post.category.length === 0 || this.post.imgurl.length === 0) {
         console.log(this.post)
-        this.error = 'Check Fields'
+        this.error = 'Complete all fields'
         return
       }
       this.post.status = 'pending'
@@ -111,7 +107,7 @@ export default {
       // this.post.content = this.editor.getData()
       this.post.posterId = this.$store.getters.userId
       if (this.post.title.length === 0 || this.post.title.length > 100 || this.post.content.length === 0 || this.post.category.length === 0 || this.post.imgurl.length === 0) {
-        this.error = 'Check Fields'
+        this.error = 'Complete all fields'
         return
       }
       this.post.status = 'draft'

@@ -36,15 +36,7 @@ module.exports = {
       const limit = parseInt(req.query.limit) || 0
       const start = parseInt(req.query.start) || 0
       if(req.query.cat) {
-        let category = ''
-        if(req.query.cat === 'school-news') {
-          category = 'School News'
-        } else if(req.query.cat === 'world') {
-          category = 'World'
-        } else if(req.query.cat === 'politics') {
-          category = 'Politics'
-        }
-        items = await News.find({category:category, status:'approved'}).skip(start).limit(limit).sort('-date')
+        items = await News.find({category:req.query.cat, status:'approved'}).skip(start).limit(limit).sort('-date')
         res.send(items)
       } else {
         items = await News.find({status:'approved'}).skip(start).limit(limit).sort('-date')
@@ -58,15 +50,7 @@ module.exports = {
   async indexFeatured (req,res) {
     try {
       if(req.query.cat) {
-        let category = ''
-        if(req.query.cat === 'school-news') {
-          category = 'School News'
-        } else if(req.query.cat === 'world') {
-          category = 'World'
-        } else if(req.query.cat === 'politics') {
-          category = 'Politics'
-        }
-        items = await News.find({category:category, status:'approved', featured:true}).sort('-date')
+        items = await News.find({category:req.query.cat, status:'approved', featured:true}).sort('-date')
         res.send(items)
       } else {
         items = await News.find({status:'approved', featured:true}).sort('-date')

@@ -28,7 +28,7 @@
         >
         <template slot="items" slot-scope="props">
           <td class="text-xs-left">{{ props.item.title }}</td>
-          <td class="text-xs-left">{{ props.item.category }}</td>
+          <td class="text-xs-left">{{ convertedCat(props.item.category) }}</td>
           <td class="text-xs-left">{{ props.item.date.toJSON().substr(0,10).split('-').reverse().join('/')}}</td>
           <td class="text-xs-right px-0 pr-3">
             <v-btn icon class="mx-0" @click="previewPost(props.item)">
@@ -50,7 +50,7 @@
         >
         <template slot="items" slot-scope="props">
           <td class="text-xs-left">{{ props.item.title }}</td>
-          <td class="text-xs-left">{{ props.item.category }}</td>
+          <td class="text-xs-left">{{ convertedCat(props.item.category) }}</td>
           <td class="text-xs-left">{{ props.item.date.toJSON().substr(0,10).split('-').reverse().join('/')}}</td>
           <td class="text-xs-right px-0 pr-3">
             <v-btn icon class="mx-0" @click="previewPost(props.item)">
@@ -82,7 +82,7 @@
         >
         <template slot="items" slot-scope="props">
           <td class="text-xs-left">{{ props.item.title }}</td>
-          <td class="text-xs-left">{{ props.item.category }}</td>
+          <td class="text-xs-left">{{ convertedCat(props.item.category) }}</td>
           <td class="text-xs-left">{{ props.item.poster.name }}</td>
           <td class="text-xs-left">{{ props.item.date.toJSON().substr(0,10).split('-').reverse().join('/')}}</td>
           <td class="text-xs-right px-0 pr-3">
@@ -111,7 +111,7 @@
         >
         <template slot="items" slot-scope="props">
           <td class="text-xs-left">{{ props.item.title }}</td>
-          <td class="text-xs-left">{{ props.item.category }}</td>
+          <td class="text-xs-left">{{ convertedCat(props.item.category) }}</td>
           <td class="text-xs-left">{{ props.item.poster.name }}</td>
           <td class="text-xs-left">{{ props.item.date.toJSON().substr(0,10).split('-').reverse().join('/')}}</td>
           <td class="">
@@ -231,6 +231,7 @@ export default {
         for (var j = 0; j < posts.length; j++) {
           posts[j].poster = (await UserService.get(posts[j].posterId)).data
           posts[j].date = new Date(posts[j].date)
+          //posts[j].category = this.convertedCat(posts[j].category)
         }
         this.posts = posts
         const aposts = data.activePosts
@@ -343,7 +344,16 @@ export default {
         this.$emit('snack', 'Removed from featured posts')
       }
       this.fetchData()
-    }
+    },
+    convertedCat (cat) {
+      if (cat === undefined) {
+        return ''
+      } else if (this.$store.getters.invCategoryMap.get(cat)) {
+        return this.$store.getters.invCategoryMap.get(cat)
+      } else {
+        return cat
+      }
+    },
   }
 }
 </script>

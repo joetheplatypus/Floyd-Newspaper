@@ -7,9 +7,7 @@
       <v-toolbar-side-icon class="hidden-md-and-up" @click="menu = true"></v-toolbar-side-icon>
       <v-toolbar-items class="hidden-sm-and-down">
         <v-btn flat :to="{name: 'Home'}">All</v-btn>
-        <v-btn flat :to="{name: 'Home', params: {category: 'school-news'}}">School News</v-btn>
-        <v-btn flat :to="{name: 'Home', params: {category: 'politics'}}">Politics</v-btn>
-        <v-btn flat :to="{name: 'Home', params: {category: 'world'}}">World</v-btn>
+        <v-btn v-for="category in $store.getters.categories" :key="category.value" flat :to="{name: 'Home', params: {category: category.value}}">{{category.name}}</v-btn>
       </v-toolbar-items>
     </v-toolbar>
     <v-menu

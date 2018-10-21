@@ -11,7 +11,43 @@ export default new Vuex.Store({
       _id: null,
       admin: false
     },
-    loggedIn: false
+    loggedIn: false,
+    categories: [
+      {name: 'School News', value: 'school-news'},
+      {name: 'World', value: 'world'},
+      {name: 'Media', value: 'media'},
+      {name: 'Politics', value: 'politics'},
+      {name: 'Science', value: 'science'},
+      {name: 'School and Local News', value: 'school-and-local-news'},
+      {name: 'Environmental Issues', value: 'environmental-issues'},
+      {name: 'Agony Aunt', value: 'agony-aunt'},
+      {name: 'Educational Interview', value: 'educational-interview'},
+      {name: 'Opinion Pieces', value: 'opinion-pieces'}
+    ],
+    categoryMap: new Map([
+      ['School News', 'school-news'],
+      ['World', 'world'],
+      ['Media', 'media'],
+      ['Politics', 'politics'],
+      ['Science', 'science'],
+      ['School and Local News', 'school-and-local-news'],
+      ['Environmental Issues', 'environmental-issues'],
+      ['Agony Aunt', 'agony-aunt'],
+      ['Educational Interview', 'educational-interview'],
+      ['Opinion Pieces', 'opinion-pieces']
+    ]),
+    invCategoryMap: new Map([
+      ['school-news', 'School News'],
+      ['world', 'World'],
+      ['media', 'Media'],
+      ['politics', 'Politics'],
+      ['science', 'Science'],
+      ['school-and-local-news', 'School and Local News'],
+      ['environmental-issues', 'Environmental Issues'],
+      ['agony-aunt', 'Agony Aunt'],
+      ['educational-interview', 'Educational Interview'],
+      ['opinion-pieces', 'Opinion Pieces']
+    ])
   },
   mutations: {
     setToken (state, token) {
@@ -40,6 +76,9 @@ export default new Vuex.Store({
     token: state => state.token,
     loggedIn: state => state.loggedIn,
     admin: state => state.user.admin,
+    categories: state => state.categories,
+    categoryMap: state => state.categoryMap,
+    invCategoryMap: state => state.invCategoryMap,
     userId: state => state.user._id || null
   }
 })

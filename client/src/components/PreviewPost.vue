@@ -20,7 +20,7 @@
           :src="post.imgurl"
           height="200px"
         />
-        <v-card-title><h2 class="px-3">{{post.title}}</h2><i> in <router-link :to="{name:'Home', params: {category: convertCat(post.category)}}">{{post.category}}</router-link></i><v-spacer /><span class="px-3">by {{post.poster.name}} - {{post.date.toJSON().substr(0,10).split('-').reverse().join('/')}}</span></v-card-title>
+        <v-card-title><h2 class="px-3">{{post.title}}</h2><i> in <router-link :to="{name:'Home', params: {category: post.category}}">{{convertedCat(post.category)}}</router-link></i><v-spacer /><span class="px-3">by {{post.poster.name}} - {{post.date.toJSON().substr(0,10).split('-').reverse().join('/')}}</span></v-card-title>
         <v-card-text>
           <v-container :class="{'pa-0': $vuetify.breakpoint.smAndDown, '': $vuetify.breakpoint.mdAndUp}">
             <div v-html="post.content" class="mycontent text-xs-left body-1"></div>
@@ -63,15 +63,17 @@ export default {
     this.post = post
   },
   methods: {
-    convertCat (cat) {
-      if (cat === 'School News') {
-        return 'school-news'
-      } else if (cat === 'Politics') {
-        return 'politics'
-      } else if (cat === 'World') {
-        return 'world'
+    convertedCat (cat) {
+      if (cat === undefined) {
+        return ''
+      } else if (this.$store.getters.invCategoryMap.get(cat)) {
+        return this.$store.getters.invCategoryMap.get(cat)
+      } else {
+        this.error = 'cannot find category'
+        this.alert = true
+        return ''
       }
-    }
+    },
   }
 }
 </script>
