@@ -24,7 +24,7 @@
           </v-flex>
         </v-layout>
         <!-- <textarea name="content" id="editor" v-model="post.content" /> -->
-        <vue-editor v-model="post.content"></vue-editor>
+        <vue-editor v-model="post.content" useCustomImageHandler @imageAdded="handleImageAdded"></vue-editor>
         <v-btn @click.prevent="save()" flat color="primary">Save as draft</v-btn>
         <v-btn @click.prevent="submitDialog = true" flat color="primary">Submit</v-btn>
       </v-form>
@@ -133,6 +133,22 @@ export default {
       if (response.filename) {
         this.post.imgurl = `${config.url}/${response.filename}`
         this.uploadImg = false
+      } else {
+        this.error = 'an error occured uploading the image'
+      }
+    },
+    async handleImageAdded (file, Editor, cursorLocation, resetUploader) {
+      const formData = new FormData()
+      formData.append('img', file)
+
+      for (var pair of formData.entries()) {
+        console.log(pair[0] + ', ' + pair[1])
+      }
+      const response = (await NewsService.uploadImg(formData)).data
+      if (response.filename) {
+        let url = `${config.url}/${response.filename}`
+        Editor.insertEmbed(cursorLocation, 'image', url)
+        resetUploader()
       } else {
         this.error = 'an error occured uploading the image'
       }

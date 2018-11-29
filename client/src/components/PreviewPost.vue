@@ -73,7 +73,7 @@ export default {
         this.alert = true
         return ''
       }
-    },
+    }
   }
 }
 </script>

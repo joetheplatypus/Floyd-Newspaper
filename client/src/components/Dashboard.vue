@@ -231,7 +231,6 @@ export default {
         for (var j = 0; j < posts.length; j++) {
           posts[j].poster = (await UserService.get(posts[j].posterId)).data
           posts[j].date = new Date(posts[j].date)
-          //posts[j].category = this.convertedCat(posts[j].category)
         }
         this.posts = posts
         const aposts = data.activePosts
@@ -353,7 +352,7 @@ export default {
       } else {
         return cat
       }
-    },
+    }
   }
 }
 </script>

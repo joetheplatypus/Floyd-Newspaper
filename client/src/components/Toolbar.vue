@@ -21,24 +21,14 @@
       content-class="fullwidth hidden-md-and-up"
       class="fixmargin hidden-md-and-up">
       <v-list light>
-        <router-link :to="{name: 'Home'}" class="nodec">
+        <router-link  :to="{name: 'Home'}" class="nodec">
           <v-list-tile>
             <v-list-tile-title>Home</v-list-tile-title>
           </v-list-tile>
         </router-link>
-        <router-link :to="{name: 'Home', params: {category: 'school-news'}}" class="nodec">
+        <router-link v-for="category in $store.getters.categories" :key="category.value" :to="{name: 'Home', params: {category: category.value}}" class="nodec">
           <v-list-tile>
-            <v-list-tile-title>School News</v-list-tile-title>
-          </v-list-tile>
-        </router-link>
-        <router-link :to="{name: 'Home', params: {category: 'politics'}}" class="nodec">
-          <v-list-tile>
-            <v-list-tile-title>Politics</v-list-tile-title>
-          </v-list-tile>
-        </router-link>
-        <router-link :to="{name: 'Home', params: {category: 'world'}}" class="nodec">
-          <v-list-tile>
-            <v-list-tile-title>World</v-list-tile-title>
+            <v-list-tile-title>{{category.name}}</v-list-tile-title>
           </v-list-tile>
         </router-link>
       </v-list>
